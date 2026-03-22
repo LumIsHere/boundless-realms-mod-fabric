@@ -5,20 +5,20 @@
 	"name": "Boundless Realms Mod",
 	"description": "A mod that has infinite possibilities",
 	"authors": [
-		"Lum Chan and Holly Yi"
+		"Lum Chan, Holly Yi"
 	],
 	"license": "All rights reserved",
 	"icon": "assets/boundless_realms/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"lum.boundless_realms.BoundlessRealmsMod"
+			"com.boundless_realms.BoundlessRealmsMod"
 		],
         "client": [
-            "lum.boundless_realms.BoundlessRealmsModClient"
+            "com.boundless_realms.BoundlessRealmsModClient"
         ],
 		"fabric-datagen": [
-			"lum.boundless_realms.BoundlessRealmsModDataGenerator"
+			"com.boundless_realms.BoundlessRealmsModDataGenerator"
 		]
 	},
 	"mixins": [
