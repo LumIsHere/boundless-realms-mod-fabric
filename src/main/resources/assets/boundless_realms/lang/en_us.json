@@ -41,5 +41,7 @@
   "dialogue.boundless_realms.inspector.return": "Seems real. Take it back.",
   "dialogue.boundless_realms.inspector.fake": "This is a fake ticket. Your health has been reduced to half a heart.",
   "dialogue.boundless_realms.inspector.warning": "I'll confiscate your ticket this time. Consider this a warning.",
-  "dialogue.boundless_realms.inspector.no_ticket": "Hey, where is your lunch ticket?"
+  "dialogue.boundless_realms.inspector.no_ticket": "Hey, where is your lunch ticket?",
+  "tooltip.boundless_realms.wallet.money": "Money: %s",
+  "tooltip.boundless_realms.wallet.empty": "Empty"
 }
