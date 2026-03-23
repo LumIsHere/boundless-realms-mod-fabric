@@ -33,6 +33,6 @@ public class NetherSmeltingRecipe extends AbstractCookingRecipe {
 
     @Override
     public Item getCookerItem() {
-        return ModBlocks.NETHER_FURNACE.asItem();
+        return null;
     }
 }
