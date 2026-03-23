@@ -54,8 +54,6 @@ public class ModItems {
             "afak_med_kit",
             settings -> new MedKitItem(settings, 10.0f, 40),
             new Item.Settings());
-    public static final Item BEDROCK_HAND = register("bedrock_hand", BedrockHandItem::new,
-            new Item.Settings().maxCount(1));
 
     public static <T extends Item> T register(String name, Function<Item.Settings, T> itemFactory, Item.Settings settings) {
         Identifier id = Identifier.of(BoundlessRealmsMod.MOD_ID, name);

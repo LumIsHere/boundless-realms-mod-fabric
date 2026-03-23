@@ -3,16 +3,7 @@
 	"package": "com.boundless_realms.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"CreativeInventoryScreenMixin",
-		"ExampleMixin",
-		"HandledScreenAccessor",
-		"HeldItemRendererMixin",
-		"PlayerEntityMixin",
-		"PlayerScreenHandlerMixin",
-		"ServerPlayerEntityMixin",
-		"ScreenHandlerAccessor",
-		"SlotAccessor",
-		"ClientPlayerInteractionManagerMixin"
+		"ExampleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
