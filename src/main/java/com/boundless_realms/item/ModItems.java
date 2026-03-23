@@ -65,9 +65,6 @@ public class ModItems {
     }
 
     private static AttributeModifiersComponent createBedrockGauntletAttributes() {
-        // Bedrock-style punching is much faster than Java's default attack cooldown system.
-        // We give the gauntlet an extremely large attack speed bonus so its cooldown is
-        // effectively gone while the item is held in the main hand.
         return AttributeModifiersComponent.builder()
                 .add(
                         EntityAttributes.ATTACK_DAMAGE,
