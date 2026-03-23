@@ -1,0 +1,47 @@
+{
+  "block.boundless_realms.nether_furnace": "下界熔爐",
+  "container.nether_furnace": "下界熔爐",
+
+  "item.boundless_realms.taiga_1_survival_machete": "泰伽一式生存砍刀",
+  "item.boundless_realms.wither_fury": "凋零之怒",
+  "item.boundless_realms.backstab_totem": "背刺圖騰",
+  "item.boundless_realms.bedrock_gauntlet": "基岩護臂",
+  "item.boundless_realms.bedrock_hand": "基岩之手",
+  "item.boundless_realms.anglerfish_mask": "鮟鱇魚面",
+  "item.boundless_realms.portable_crafting_table": "袖珍工作臺",
+  "item.boundless_realms.lunch_ticket": "午餐券",
+  "item.boundless_realms.fake_lunch_ticket": "偽午餐券",
+  "item.boundless_realms.money": "錢",
+  "item.boundless_realms.nether_furnace_upgrade_template": "下界熔爐升級圖",
+  "item.boundless_realms.wallet": "錢囊",
+  "item.boundless_realms.nether_furnace": "下界熔爐",
+  "item.boundless_realms.ticket_inspector_spawn_egg": "檢票員之卵",
+  "item.boundless_realms.afak_med_kit": "AFAK醫療包",
+  "item.boundless_realms.ruby": "紅玉",
+
+  "notification.lunch_ticket.no_enough_money": "需%s錢方可使用！",
+
+  "itemgroup.boundless_realms.boundless_realms_general": "無垠境界",
+  "itemgroup.boundless_realms.boundless_realms_medical_supplies": "醫療供應",
+
+  "notification_no_target_backstab_totem": "五千方塊內無人可尋",
+  "teleported_to_target_backstab_totem": "已傳至 %s 背後！",
+  "not_enough_money": "錢財不足！",
+  "spent_money": "已費 %s 錢。",
+  "death.too_honest": "汝因過於誠實而被殺",
+  "death.attack.too_honest": "汝因過於誠實而被殺",
+  "entity.boundless_realms.ticket_inspector": "檢票員",
+
+  "dialogue.boundless_realms.inspector.question": "此票為偽乎？",
+  "dialogue.boundless_realms.inspector.answer_yes": "[是]",
+  "dialogue.boundless_realms.inspector.answer_no": "[否]",
+  "dialogue.boundless_realms.inspector.honest": "真誠之童也。",
+  "dialogue.boundless_realms.inspector.self_doubt": "且慢……吾豈有誤？容我思之。",
+  "dialogue.boundless_realms.inspector.thinking": "嗯……",
+  "dialogue.boundless_realms.inspector.return": "似為真券，還汝。",
+  "dialogue.boundless_realms.inspector.fake": "此票為偽，汝命僅餘半心。",
+  "dialogue.boundless_realms.inspector.warning": "此番沒收，且作警戒。",
+  "dialogue.boundless_realms.inspector.no_ticket": "喂，汝之午餐券安在？",
+  "tooltip.boundless_realms.wallet.money": "錢：%s",
+  "tooltip.boundless_realms.wallet.empty": "空"
+}

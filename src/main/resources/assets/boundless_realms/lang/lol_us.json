@@ -1,0 +1,47 @@
+{
+  "block.boundless_realms.nether_furnace": "Nether Furniss",
+  "container.nether_furnace": "Nether Furniss",
+
+  "item.boundless_realms.taiga_1_survival_machete": "Taiga-1 Surviva Choppa",
+  "item.boundless_realms.wither_fury": "Wither Rage",
+  "item.boundless_realms.backstab_totem": "Backstab Toh-tem",
+  "item.boundless_realms.bedrock_gauntlet": "Bedrok Pawz",
+  "item.boundless_realms.bedrock_hand": "Bedrok Paw",
+  "item.boundless_realms.anglerfish_mask": "Anglerfish Face",
+  "item.boundless_realms.portable_crafting_table": "Pawtable Craftin Table",
+  "item.boundless_realms.lunch_ticket": "Lunchez Tikkit",
+  "item.boundless_realms.fake_lunch_ticket": "Fayk Lunchez Tikkit",
+  "item.boundless_realms.money": "Moneez",
+  "item.boundless_realms.nether_furnace_upgrade_template": "Nether Furniss Upgrade Plan",
+  "item.boundless_realms.wallet": "Wallet",
+  "item.boundless_realms.nether_furnace": "Nether Furniss",
+  "item.boundless_realms.ticket_inspector_spawn_egg": "Tickit Inspectah Spawn Egg",
+  "item.boundless_realms.afak_med_kit": "AFAK Med Kit",
+  "item.boundless_realms.ruby": "Shiny Ruby",
+
+  "notification.lunch_ticket.no_enough_money": "U need %s moneez 2 use dis!",
+
+  "itemgroup.boundless_realms.boundless_realms_general": "Boundless Realmz",
+  "itemgroup.boundless_realms.boundless_realms_medical_supplies": "Medic Stuffz",
+
+  "notification_no_target_backstab_totem": "No hoomans in 5000 blok radius, sadface",
+  "teleported_to_target_backstab_totem": "Zoop'd behind %s!",
+  "not_enough_money": "No moneez :(",
+  "spent_money": "Spent %s moneez.",
+  "death.too_honest": "U were oof'd 4 bein too honest",
+  "death.attack.too_honest": "U were oof'd 4 bein too honest",
+  "entity.boundless_realms.ticket_inspector": "Tickit Inspectah",
+
+  "dialogue.boundless_realms.inspector.question": "Iz dis tikkit fake?",
+  "dialogue.boundless_realms.inspector.answer_yes": "[Yeh]",
+  "dialogue.boundless_realms.inspector.answer_no": "[Naw]",
+  "dialogue.boundless_realms.inspector.honest": "Such honest kitteh.",
+  "dialogue.boundless_realms.inspector.self_doubt": "Hold up... did I derp? Lemme think.",
+  "dialogue.boundless_realms.inspector.thinking": "hmmmm...",
+  "dialogue.boundless_realms.inspector.return": "Looks real. Here ya go.",
+  "dialogue.boundless_realms.inspector.fake": "Dat's a fakey. Ur health iz half a heart now.",
+  "dialogue.boundless_realms.inspector.warning": "Confiscatin dis one. Consider urself warned.",
+  "dialogue.boundless_realms.inspector.no_ticket": "Hey, where ur lunch tikkit?",
+  "tooltip.boundless_realms.wallet.money": "Moneez: %s",
+  "tooltip.boundless_realms.wallet.empty": "Nothin inside"
+}

@@ -6,6 +6,7 @@
   "item.boundless_realms.wither_fury": "Wither-Zorn",
   "item.boundless_realms.backstab_totem": "Rückenstich-Totem",
   "item.boundless_realms.bedrock_gauntlet": "Bedrock-Kampfhandschuh",
+  "item.boundless_realms.bedrock_hand": "Bedrock-Hand",
   "item.boundless_realms.anglerfish_mask": "Anglerfisch-Maske",
   "item.boundless_realms.portable_crafting_table": "Tragbare Werkbank",
   "item.boundless_realms.lunch_ticket": "Mittagsticket",
@@ -40,5 +41,7 @@
   "dialogue.boundless_realms.inspector.return": "Scheint echt zu sein. Nimm es zurück.",
   "dialogue.boundless_realms.inspector.fake": "Das ist ein gefälschtes Ticket. Deine Gesundheit wurde auf ein halbes Herz reduziert.",
   "dialogue.boundless_realms.inspector.warning": "Ich beschlagnahme dein Ticket dieses Mal. Betrachte das als Warnung.",
-  "dialogue.boundless_realms.inspector.no_ticket": "Hey, wo ist dein Mittagsticket?"
+  "dialogue.boundless_realms.inspector.no_ticket": "Hey, wo ist dein Mittagsticket?",
+  "tooltip.boundless_realms.wallet.money": "Geld: %s",
+  "tooltip.boundless_realms.wallet.empty": "Leer"
 }

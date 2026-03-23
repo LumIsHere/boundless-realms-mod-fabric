@@ -6,6 +6,7 @@
   "item.boundless_realms.wither_fury": "Ярость визера",
   "item.boundless_realms.backstab_totem": "Тотем удара в спину",
   "item.boundless_realms.bedrock_gauntlet": "Бедрок-кастет",
+  "item.boundless_realms.bedrock_hand": "Рука из бедрока",
   "item.boundless_realms.anglerfish_mask": "Маска удильщика",
   "item.boundless_realms.portable_crafting_table": "Переносной верстак",
   "item.boundless_realms.lunch_ticket": "Билет на обед",
@@ -40,5 +41,7 @@
   "dialogue.boundless_realms.inspector.return": "Похоже настоящий. Возьми обратно.",
   "dialogue.boundless_realms.inspector.fake": "Это поддельный билет. Ваше здоровье уменьшено до половины сердца.",
   "dialogue.boundless_realms.inspector.warning": "На этот раз я конфискую ваш билет. Считайте это предупреждением.",
-  "dialogue.boundless_realms.inspector.no_ticket": "Эй, где твой билет на обед?"
+  "dialogue.boundless_realms.inspector.no_ticket": "Эй, где твой билет на обед?",
+  "tooltip.boundless_realms.wallet.money": "Деньги: %s",
+  "tooltip.boundless_realms.wallet.empty": "Пусто"
 }

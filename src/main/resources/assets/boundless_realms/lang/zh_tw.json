@@ -6,6 +6,7 @@
   "item.boundless_realms.wither_fury": "凋零之怒",
   "item.boundless_realms.backstab_totem": "背刺圖騰",
   "item.boundless_realms.bedrock_gauntlet": "基岩拳套",
+  "item.boundless_realms.bedrock_hand": "基岩之手",
   "item.boundless_realms.anglerfish_mask": "鮟鱇魚面具",
   "item.boundless_realms.portable_crafting_table": "可攜式工作台",
   "item.boundless_realms.lunch_ticket": "午餐券",
@@ -40,5 +41,7 @@
   "dialogue.boundless_realms.inspector.return": "看起來是真的。還給你。",
   "dialogue.boundless_realms.inspector.fake": "這是假票。你的生命已減少到半顆心。",
   "dialogue.boundless_realms.inspector.warning": "這次我會沒收你的票，當作警告。",
-  "dialogue.boundless_realms.inspector.no_ticket": "嘿，你的午餐券呢？"
+  "dialogue.boundless_realms.inspector.no_ticket": "嘿，你的午餐券呢？",
+  "tooltip.boundless_realms.wallet.money": "金錢：%s",
+  "tooltip.boundless_realms.wallet.empty": "空"
 }
