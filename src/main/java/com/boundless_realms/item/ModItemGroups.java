@@ -44,6 +44,10 @@ public class ModItemGroups {
                     .displayName(Text.translatable("itemgroup.boundless_realms.digital_items"))
                     .entries(((displayContext, entries) -> {
                         entries.add(ModItems.ASUS_GTX_750TI);
+                        entries.add(ModItems.DUAL_FAN_COOLING_SYSTEM);
+                        entries.add(ModItems.HEAT_SINK);
+                        entries.add(ModItems.PCIE_GOLD_FINGERS);
+                        entries.add(ModItems.GRAPHICS_PROCESSING_UNIT_CORE);
                     })).build());
 
     public static void registerItemGroups() {

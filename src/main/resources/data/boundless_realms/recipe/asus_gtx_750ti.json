@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "bdb",
+    "hgh",
+    "hpd"
+  ],
+  "key": {
+    "b": "black_dye",
+    "d": "boundless_realms:dual_fan_cooling_system",
+    "h": "boundless_realms:heat_sink",
+    "p": "boundless_realms:pcie_gold_fingers",
+    "g": "boundless_realms:graphics_processing_unit_core"
+  },
+  "result": {
+    "id": "boundless_realms:asus_gtx_750ti",
+    "count": 1
+  }
+}

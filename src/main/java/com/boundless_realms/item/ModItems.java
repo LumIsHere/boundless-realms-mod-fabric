@@ -24,7 +24,6 @@ import java.util.function.Function;
 public class ModItems {
 
     public static final Item AN_ITEM = register("an_item", Item::new, new Item.Settings());
-    public static final Item ASUS_GTX_750TI = register("asus_gtx_750ti", Item::new, new Item.Settings());
     public static final Item RUBY = register("ruby", Item::new, new Item.Settings());
     public static final Item FAKE_LUNCH_TICKET = register("fake_lunch_ticket", Item::new, new Item.Settings().maxCount(1));
     public static final Item MONEY = register("money", Item::new, new Item.Settings().maxCount(1000000));
@@ -50,10 +49,23 @@ public class ModItems {
             new Item.Settings());
     public static final SpawnEggItem TICKET_INSPECTOR_SPAWN_EGG = register("ticket_inspector_spawn_egg", SpawnEggItem::new,
             new Item.Settings().spawnEgg(ModEntities.TICKET_INSPECTOR));
+
+    /**
+     * Medical Supplies
+     */
     public static final Item AFAK_MED_KIT = register(
             "afak_med_kit",
             settings -> new MedKitItem(settings, 10.0f, 40),
             new Item.Settings());
+
+    /**
+     * Digital Items
+     */
+    public static final Item ASUS_GTX_750TI = register("asus_gtx_750ti", Item::new, new Item.Settings());
+    public static final Item DUAL_FAN_COOLING_SYSTEM = register("dual_fan_cooling_system", Item::new, new Item.Settings());
+    public static final Item HEAT_SINK = register("heat_sink", Item::new, new Item.Settings());
+    public static final Item PCIE_GOLD_FINGERS = register("pcie_gold_fingers", Item::new, new Item.Settings());
+    public static final Item GRAPHICS_PROCESSING_UNIT_CORE = register("graphics_processing_unit_core", Item::new, new Item.Settings());
 
     public static <T extends Item> T register(String name, Function<Item.Settings, T> itemFactory, Item.Settings settings) {
         Identifier id = Identifier.of(BoundlessRealmsMod.MOD_ID, name);

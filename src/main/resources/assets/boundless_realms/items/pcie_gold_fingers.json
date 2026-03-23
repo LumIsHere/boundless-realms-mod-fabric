@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type" : "minecraft:model",
+    "model": "boundless_realms:item/an_item"
+  }
+}

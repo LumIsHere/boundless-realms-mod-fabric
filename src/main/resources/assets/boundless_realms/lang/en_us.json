@@ -15,7 +15,12 @@
   "item.boundless_realms.ticket_inspector_spawn_egg": "Ticket Inspector Spawn Egg",
   "item.boundless_realms.afak_med_kit": "AFAK Med Kit",
   "item.boundless_realms.ruby": "Ruby",
+
   "item.boundless_realms.asus_gtx_750ti": "ASUS GTX 750Ti",
+  "item.boundless_realms.heat_sink": "Heat Sink",
+  "item.boundless_realms.dual_fan_cooling_system": "Dual Fan Cooling System",
+  "item.boundless_realms.pcie_gold_fingers": "PCIe Gold Fingers",
+  "item.boundless_realms.graphics_processing_unit_core": "GPU Core",
 
   "notification.lunch_ticket.no_enough_money": "You need %s money to use it!",
 
