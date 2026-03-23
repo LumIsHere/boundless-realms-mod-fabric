@@ -6,7 +6,6 @@ import com.boundless_realms.command.InspectorAnswerCommand;
 import com.boundless_realms.entity.ModEntities;
 import com.boundless_realms.item.ModItemGroups;
 import com.boundless_realms.item.ModItems;
-import com.boundless_realms.item.PortableShulkerBoxHandler;
 import com.boundless_realms.recipe.ModRecipeTypes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -25,7 +24,6 @@ public class BoundlessRealmsMod implements ModInitializer {
         ModBlocks.registerModBlocks();
         ModBlockEntities.registerBlockEntities();
         ModRecipeTypes.registerRecipes();
-        PortableShulkerBoxHandler.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 				InspectorAnswerCommand.register(dispatcher)

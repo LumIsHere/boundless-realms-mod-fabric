@@ -45,8 +45,6 @@ public class ModItems {
                     .maxCount(1)
                     .component(DataComponentTypes.EQUIPPABLE, EquippableComponent.builder(EquipmentSlot.HEAD)
                             .equipSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER).build()));
-    public static final Item PORTABLE_CRAFTING_TABLE = register("portable_crafting_table", PortableCraftingTableItem::new,
-            new Item.Settings().maxCount(1));
     public static final Item WALLET = register("wallet", WalletItem::new,
             new Item.Settings().maxCount(1));
     public static final Item NETHER_FURNACE_UPGRADE_TEMPLATE = register("nether_furnace_upgrade_template", Item::new, new Item.Settings());
