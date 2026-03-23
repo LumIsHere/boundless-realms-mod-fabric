@@ -1,6 +1,6 @@
-package lum.boundless_realms.mixin;
+package com.boundless_realms.mixin;
 
-import lum.boundless_realms.item.BedrockHandHolder;
+import com.boundless_realms.item.BedrockHandHolder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.player.PlayerEntity;

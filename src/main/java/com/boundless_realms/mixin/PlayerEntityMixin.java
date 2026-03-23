@@ -1,7 +1,7 @@
-package lum.boundless_realms.mixin;
+package com.boundless_realms.mixin;
 
-import lum.boundless_realms.item.BedrockHandHolder;
-import lum.boundless_realms.item.ModItems;
+import com.boundless_realms.item.BedrockHandHolder;
+import com.boundless_realms.item.ModItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;

@@ -1,4 +1,4 @@
-package lum.boundless_realms.mixin;
+package com.boundless_realms.mixin;
 
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
