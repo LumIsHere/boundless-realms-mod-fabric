@@ -8,7 +8,6 @@
   "item.boundless_realms.backstab_totem": "Backstab Totem",
   "item.boundless_realms.bedrock_gauntlet": "Bedrock Gauntlet",
   "item.boundless_realms.anglerfish_mask": "Anglerfish Mask",
-  "item.boundless_realms.portable_crafting_table": "Portable Crafting Table",
   "item.boundless_realms.lunch_ticket": "Lunch Ticket",
   "item.boundless_realms.fake_lunch_ticket": "Fake Lunch Ticket",
   "item.boundless_realms.money": "Money",
@@ -18,7 +17,6 @@
   "item.boundless_realms.ticket_inspector_spawn_egg": "Ticket Inspector Spawn Egg",
   "item.boundless_realms.afak_med_kit": "AFAK Med Kit",
   "item.boundless_realms.ruby": "Ruby",
-  "item.boundless_realms.bedrock_hand": "Bedrock Hand",
 
   "notification.lunch_ticket.no_enough_money": "You need %s money to use it!",
 
