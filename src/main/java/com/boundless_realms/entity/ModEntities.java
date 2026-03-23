@@ -19,10 +19,10 @@ import java.util.Map;
 public class ModEntities {
     private static final Map<EntityType<? extends LivingEntity>, DefaultAttributeContainer.Builder> ATTRIBUTE_REGISTRY = new HashMap<>();
 
-    public static final EntityType<LunchTicketProjectileEntity> LUNCH_TICKET_PROJECTILE = registerEntity(
-            entityId("lunch_ticket_projectile"),
-            entityKey(entityId("lunch_ticket_projectile")),
-            EntityType.Builder.<LunchTicketProjectileEntity>create(LunchTicketProjectileEntity::new, SpawnGroup.MISC)
+    public static final EntityType<LunchTicketEntity> LUNCH_TICKET = registerEntity(
+            entityId("lunch_ticket"),
+            entityKey(entityId("lunch_ticket")),
+            EntityType.Builder.<LunchTicketEntity>create(LunchTicketEntity::new, SpawnGroup.MISC)
                     .dimensions(0.25F, 0.25F)
     );
 
