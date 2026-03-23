@@ -10,7 +10,8 @@
 		"PlayerEntityMixin",
 		"PlayerScreenHandlerMixin",
 		"ServerPlayerEntityMixin",
-		"ScreenHandlerAccessor"
+		"ScreenHandlerAccessor",
+		"ClientPlayerInteractionManagerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
