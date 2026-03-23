@@ -15,6 +15,7 @@
   "item.boundless_realms.ticket_inspector_spawn_egg": "Ticket Inspector Spawn Egg",
   "item.boundless_realms.afak_med_kit": "AFAK Med Kit",
   "item.boundless_realms.ruby": "Ruby",
+  "item.boundless_realms.gtx_750ti": "GTX 750Ti",
 
   "notification.lunch_ticket.no_enough_money": "You need %s money to use it!",
 
@@ -40,5 +41,6 @@
   "dialogue.boundless_realms.inspector.warning": "I'll confiscate your ticket this time. Consider this a warning.",
   "dialogue.boundless_realms.inspector.no_ticket": "Hey, where is your lunch ticket?",
   "tooltip.boundless_realms.wallet.money": "Money: %s",
-  "tooltip.boundless_realms.wallet.empty": "Empty"
+  "tooltip.boundless_realms.wallet.empty": "Empty",
+  "itemgroup.boundless_realms.digital_items": "Digital Items"
 }

@@ -24,6 +24,7 @@ import java.util.function.Function;
 public class ModItems {
 
     public static final Item AN_ITEM = register("an_item", Item::new, new Item.Settings());
+    public static final Item GTX_750TI = register("gtx_750ti", Item::new, new Item.Settings());
     public static final Item RUBY = register("ruby", Item::new, new Item.Settings());
     public static final Item FAKE_LUNCH_TICKET = register("fake_lunch_ticket", Item::new, new Item.Settings().maxCount(1));
     public static final Item MONEY = register("money", Item::new, new Item.Settings().maxCount(1000000));
