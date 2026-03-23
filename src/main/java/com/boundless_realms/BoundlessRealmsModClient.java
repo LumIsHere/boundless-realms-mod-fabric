@@ -10,7 +10,7 @@ public class BoundlessRealmsModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityRendererRegistry.register(
-                ModEntities.LUNCH_TICKET_PROJECTILE,
+                ModEntities.LUNCH_TICKET,
                 FlyingItemEntityRenderer::new
         );
 
