@@ -26,6 +26,7 @@ public class ModItemGroups {
                         entries.add(ModItems.FAKE_LUNCH_TICKET);
                         entries.add(ModItems.WALLET);
                         entries.add(ModItems.TICKET_INSPECTOR_SPAWN_EGG);
+                        entries.add(ModItems.BITCOIN);
                     })
                     .build());
 
