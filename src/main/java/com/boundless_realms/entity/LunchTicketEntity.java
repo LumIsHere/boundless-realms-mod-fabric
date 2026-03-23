@@ -11,9 +11,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
-public class LunchTicketProjectileEntity extends ThrownItemEntity {
+public class LunchTicketEntity extends ThrownItemEntity {
 
-    public LunchTicketProjectileEntity(EntityType<? extends LunchTicketProjectileEntity> entityType, World world) {
+    public LunchTicketEntity(EntityType<? extends LunchTicketEntity> entityType, World world) {
         super(entityType, world);
     }
 

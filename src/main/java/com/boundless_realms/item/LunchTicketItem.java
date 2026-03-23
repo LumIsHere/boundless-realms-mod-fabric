@@ -1,6 +1,6 @@
 package com.boundless_realms.item;
 
-import com.boundless_realms.entity.LunchTicketProjectileEntity;
+import com.boundless_realms.entity.LunchTicketEntity;
 import com.boundless_realms.entity.ModEntities;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
@@ -56,7 +56,7 @@ public class LunchTicketItem extends Item {
                 removeTotalMoney(player, COST);
             }
 
-            LunchTicketProjectileEntity projectile = new LunchTicketProjectileEntity(ModEntities.LUNCH_TICKET_PROJECTILE, world);
+            LunchTicketEntity projectile = new LunchTicketEntity(ModEntities.LUNCH_TICKET, world);
             projectile.setOwner(player);
             projectile.setPosition(player.getX(), player.getEyeY() - 0.1, player.getZ());
             projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, power * 3.0F, 1.0F);
