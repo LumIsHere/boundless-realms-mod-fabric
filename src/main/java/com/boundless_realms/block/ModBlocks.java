@@ -22,18 +22,6 @@ public class ModBlocks {
             true
     );
 
-    // 2. Nether Furnace with its custom class and an item
-    public static final Block NETHER_FURNACE = register(
-            "nether_furnace",
-            NetherFurnaceBlock::new,
-            AbstractBlock.Settings.create()
-                    .mapColor(MapColor.BRIGHT_RED)
-                    .requiresTool()
-                    .strength(3.5F)
-                    .luminance(state -> state.get(NetherFurnaceBlock.LIT) ? 15 : 0),
-            true
-    );
-
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         Identifier id = Identifier.of(BoundlessRealmsMod.MOD_ID, name);
 
