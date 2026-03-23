@@ -1,4 +1,4 @@
-package lum.boundless_realms.item;
+package com.boundless_realms.item;
 
 import net.minecraft.item.Item;
 
