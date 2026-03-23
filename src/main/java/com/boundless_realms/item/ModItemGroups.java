@@ -39,6 +39,14 @@ public class ModItemGroups {
                     })
                     .build());
 
+    public static final ItemGroup DIGITAL_ITEMS_GROUP = Registry.register(Registries.ITEM_GROUP,
+            Identifier.of(BoundlessRealmsMod.MOD_ID, "digital_items"),
+            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.GTX_750TI))
+                    .displayName(Text.translatable("itemgroup.boundless_realms.digital_items"))
+                    .entries(((displayContext, entries) -> {
+                        entries.add(ModItems.GTX_750TI);
+                    })).build());
+
     public static void registerItemGroups() {
         BoundlessRealmsMod.LOGGER.info("Registering item groups for " + BoundlessRealmsMod.MOD_ID);
     }
