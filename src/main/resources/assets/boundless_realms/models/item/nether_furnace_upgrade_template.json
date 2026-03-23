@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "boundless_realms:item/nether_furnace_upgrade_template"
+    "layer0": "boundless_realms:item/ruby"
   }
 }

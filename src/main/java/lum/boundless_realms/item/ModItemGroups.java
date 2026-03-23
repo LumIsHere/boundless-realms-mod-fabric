@@ -30,6 +30,7 @@ public class ModItemGroups {
                         entries.add(ModItems.WALLET);
                         entries.add(ModBlocks.NETHER_FURNACE);
                         entries.add(ModItems.TICKET_INSPECTOR_SPAWN_EGG);
+                        entries.add(ModItems.BEDROCK_HAND);
                     })
                     .build());
 

@@ -24,6 +24,14 @@ fabricApi {
 	}
 }
 
+loom {
+	runs {
+		client {
+			vmArg "--enable-native-access=ALL-UNNAMED"
+		}
+	}
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"

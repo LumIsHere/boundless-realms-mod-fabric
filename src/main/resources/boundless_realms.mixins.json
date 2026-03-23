@@ -3,7 +3,12 @@
 	"package": "lum.boundless_realms.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"ClientPlayerInteractionManagerMixin",
+		"ExampleMixin",
+		"HeldItemRendererMixin",
+		"PlayerEntityMixin",
+		"PlayerScreenHandlerMixin",
+		"ScreenHandlerAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
