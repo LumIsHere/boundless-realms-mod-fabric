@@ -13,12 +13,6 @@ import net.minecraft.util.Identifier;
 
 public class ModBlockEntities {
 
-    public static final BlockEntityType<NetherFurnaceBlockEntity> NETHER_FURNACE_ENTITY = register(
-            "nether_furnace_be",
-            NetherFurnaceBlockEntity::new,
-            ModBlocks.NETHER_FURNACE
-    );
-
     public static void registerBlockEntities() {
         BoundlessRealmsMod.LOGGER.info("Registering Block Entities for " + BoundlessRealmsMod.MOD_ID);
     }
