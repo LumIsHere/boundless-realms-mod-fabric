@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "boundless_realms:item/gtx_750ti"
+    "layer0": "boundless_realms:item/asus_gtx_750ti"
   }
 }

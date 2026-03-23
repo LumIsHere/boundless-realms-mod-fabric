@@ -1,7 +1,6 @@
 package com.boundless_realms.item;
 
 import com.boundless_realms.BoundlessRealmsMod;
-import com.boundless_realms.block.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -41,10 +40,10 @@ public class ModItemGroups {
 
     public static final ItemGroup DIGITAL_ITEMS_GROUP = Registry.register(Registries.ITEM_GROUP,
             Identifier.of(BoundlessRealmsMod.MOD_ID, "digital_items"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.GTX_750TI))
+            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.ASUS_GTX_750TI))
                     .displayName(Text.translatable("itemgroup.boundless_realms.digital_items"))
                     .entries(((displayContext, entries) -> {
-                        entries.add(ModItems.GTX_750TI);
+                        entries.add(ModItems.ASUS_GTX_750TI);
                     })).build());
 
     public static void registerItemGroups() {
