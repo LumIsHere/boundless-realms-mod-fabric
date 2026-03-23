@@ -11,6 +11,7 @@
 		"PlayerScreenHandlerMixin",
 		"ServerPlayerEntityMixin",
 		"ScreenHandlerAccessor",
+		"SlotAccessor",
 		"ClientPlayerInteractionManagerMixin"
 	],
 	"injectors": {

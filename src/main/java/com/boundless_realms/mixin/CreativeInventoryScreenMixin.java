@@ -12,20 +12,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.lang.reflect.Constructor;
-
 @Mixin(CreativeInventoryScreen.class)
 public abstract class CreativeInventoryScreenMixin {
 
-    @Unique
-    private static Constructor<?> boundlessRealms$creativeSlotConstructor;
-
     @Inject(method = "setSelectedTab", at = @At("TAIL"))
     private void boundlessRealms$repositionBedrockHandSlot(ItemGroup group, CallbackInfo ci) {
-        if (group.getType() != ItemGroup.Type.INVENTORY) {
-            return;
-        }
-
         MinecraftClient client = MinecraftClient.getInstance();
         PlayerEntity player = client.player;
         if (!(player instanceof BedrockHandHolder holder)) {
@@ -37,11 +28,19 @@ public abstract class CreativeInventoryScreenMixin {
             return;
         }
 
-        Slot wrappedSlot = player.playerScreenHandler.getSlot(bedrockHandSlotId);
-        ((ScreenHandlerAccessor) ((HandledScreenAccessor) this).boundlessRealms$getHandler()).boundlessRealms$getSlots().set(
-                bedrockHandSlotId,
-                boundlessRealms$createCreativeSlot(wrappedSlot, bedrockHandSlotId, 35, 47)
-        );
+        Slot creativeSlot = ((ScreenHandlerAccessor) ((HandledScreenAccessor) this).boundlessRealms$getHandler())
+                .boundlessRealms$getSlots()
+                .get(bedrockHandSlotId);
+        SlotAccessor creativeSlotAccessor = (SlotAccessor) creativeSlot;
+
+        if (group.getType() == ItemGroup.Type.INVENTORY) {
+            creativeSlotAccessor.boundlessRealms$setX(35);
+            creativeSlotAccessor.boundlessRealms$setY(47);
+        } else {
+            // Hide the custom slot outside the inventory tab, matching vanilla's hidden armor/crafting slots behavior.
+            creativeSlotAccessor.boundlessRealms$setX(-2000);
+            creativeSlotAccessor.boundlessRealms$setY(-2000);
+        }
     }
 
     @Unique
@@ -54,27 +53,5 @@ public abstract class CreativeInventoryScreenMixin {
         }
 
         return -1;
-    }
-
-    @Unique
-    private static Slot boundlessRealms$createCreativeSlot(Slot slot, int id, int x, int y) {
-        try {
-            if (boundlessRealms$creativeSlotConstructor == null) {
-                Class<?> creativeSlotClass = Class.forName(
-                        "net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen$CreativeSlot"
-                );
-                boundlessRealms$creativeSlotConstructor = creativeSlotClass.getDeclaredConstructor(
-                        Slot.class,
-                        int.class,
-                        int.class,
-                        int.class
-                );
-                boundlessRealms$creativeSlotConstructor.setAccessible(true);
-            }
-
-            return (Slot) boundlessRealms$creativeSlotConstructor.newInstance(slot, id, x, y);
-        } catch (ReflectiveOperationException exception) {
-            throw new RuntimeException("Failed to rebuild the Bedrock Hand creative slot", exception);
-        }
     }
 }
