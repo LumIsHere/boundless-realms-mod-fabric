@@ -27,7 +27,7 @@ public class ModItems {
     public static final Item BITCOIN = register("bitcoin", Item::new, new Item.Settings());
     public static final Item RUBY = register("ruby", Item::new, new Item.Settings());
     public static final Item FAKE_LUNCH_TICKET = register("fake_lunch_ticket", Item::new, new Item.Settings().maxCount(1));
-    public static final Item MONEY = register("money", Item::new, new Item.Settings().maxCount(1000000));
+    public static final Item MONEY = register("money", Item::new, new Item.Settings().maxCount(10000));
     public static final Item LUNCH_TICKET = register("lunch_ticket", LunchTicketItem::new, new Item.Settings().maxCount(1));
     public static final Item BACKSTAB_TOTEM = register("backstab_totem", BackstabTotemItem::new, new Item.Settings().maxCount(1));
     public static final Item BEDROCK_GAUNTLET = register(
