@@ -104,6 +104,15 @@ public class WalletItem extends Item {
         return ActionResult.SUCCESS;
     }
 
+    @Override
+    public boolean canBeNested() {
+        return false;
+    }
+
+    private static boolean isValidWalletContent(ItemStack stack) {
+        return stack.isOf(ModItems.MONEY) && stack.getItem().canBeNested();
+    }
+
     private static ItemStack findWalletStack(PlayerEntity player) {
         if (player.getMainHandStack().getItem() instanceof WalletItem) return player.getMainHandStack();
         if (player.getOffHandStack().getItem() instanceof WalletItem) return player.getOffHandStack();
@@ -128,9 +137,7 @@ public class WalletItem extends Item {
 
         @Override
         public boolean canInsert(ItemStack stack) {
-            return stack.isOf(ModItems.MONEY)
-                    && !(stack.getItem() instanceof WalletItem)
-                    && stack.getItem().canBeNested();
+            return isValidWalletContent(stack);
         }
     }
 }
