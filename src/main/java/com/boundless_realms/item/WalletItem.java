@@ -66,10 +66,8 @@ public class WalletItem extends Item {
             user.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, playerInv, player) -> {
                 return new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, syncId, playerInv, inventory, 3) {
                     {
-                        // 2. THE FIX: Loop through the first 27 slots and replace them with WalletSlot
                         for (int i = 0; i < 27; i++) {
                             Slot oldSlot = this.slots.get(i);
-                            // We replace the generic Slot with our custom WalletSlot logic
                             this.slots.set(i, new WalletSlot(inventory, i, oldSlot.x, oldSlot.y));
                         }
                     }
