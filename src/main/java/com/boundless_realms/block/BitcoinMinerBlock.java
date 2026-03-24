@@ -7,7 +7,6 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import org.jspecify.annotations.Nullable;
-import com.boundless_realms.item.ModItems;
 
 public class BitcoinMinerBlock extends BlockWithEntity implements BlockEntityProvider {
     public BitcoinMinerBlock(Settings settings) {
