@@ -11,6 +11,24 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ModItemGroups {
+    public static final ItemGroup BOUNDLESS_GEARS_GROUP = Registry.register(Registries.ITEM_GROUP,
+            Identifier.of(BoundlessRealmsMod.MOD_ID, "boundless_gears"),
+            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.VOIDSTEEL_CHESTPLATE))
+                    .displayName(Text.translatable("itemgroup.boundless_realms.boundless_gears"))
+                    .entries((displayContext, entries) -> {
+                        entries.add(ModItems.VOIDSTEEL_INGOT);
+                        entries.add(ModItems.VOIDSTEEL_SWORD);
+                        entries.add(ModItems.VOIDSTEEL_PICKAXE);
+                        entries.add(ModItems.VOIDSTEEL_AXE);
+                        entries.add(ModItems.VOIDSTEEL_SHOVEL);
+                        entries.add(ModItems.VOIDSTEEL_HOE);
+                        entries.add(ModItems.VOIDSTEEL_HELMET);
+                        entries.add(ModItems.VOIDSTEEL_CHESTPLATE);
+                        entries.add(ModItems.VOIDSTEEL_LEGGINGS);
+                        entries.add(ModItems.VOIDSTEEL_BOOTS);
+                    })
+                    .build());
+
     public static final ItemGroup BOUNDLESS_REALMS_GENERAL_GROUP = Registry.register(Registries.ITEM_GROUP,
             Identifier.of(BoundlessRealmsMod.MOD_ID, "boundless_realms_general"),
             FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.RUBY))

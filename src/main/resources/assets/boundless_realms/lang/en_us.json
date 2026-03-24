@@ -9,6 +9,16 @@
   "item.boundless_realms.wither_fury": "Wither Fury",
   "item.boundless_realms.backstab_totem": "Backstab Totem",
   "item.boundless_realms.bedrock_gauntlet": "Bedrock Gauntlet",
+  "item.boundless_realms.voidsteel_ingot": "Voidsteel Ingot",
+  "item.boundless_realms.voidsteel_sword": "Voidsteel Sword",
+  "item.boundless_realms.voidsteel_pickaxe": "Voidsteel Pickaxe",
+  "item.boundless_realms.voidsteel_axe": "Voidsteel Axe",
+  "item.boundless_realms.voidsteel_shovel": "Voidsteel Shovel",
+  "item.boundless_realms.voidsteel_hoe": "Voidsteel Hoe",
+  "item.boundless_realms.voidsteel_helmet": "Voidsteel Helmet",
+  "item.boundless_realms.voidsteel_chestplate": "Voidsteel Chestplate",
+  "item.boundless_realms.voidsteel_leggings": "Voidsteel Leggings",
+  "item.boundless_realms.voidsteel_boots": "Voidsteel Boots",
   "item.boundless_realms.anglerfish_mask": "Anglerfish Mask",
   "item.boundless_realms.lunch_ticket": "Lunch Ticket",
   "item.boundless_realms.fake_lunch_ticket": "Fake Lunch Ticket",
@@ -27,6 +37,7 @@
 
   "notification.lunch_ticket.no_enough_money": "You need %s money to use it!",
 
+  "itemgroup.boundless_realms.boundless_gears": "Boundless Gears",
   "itemgroup.boundless_realms.boundless_realms_general": "Boundless Realms",
   "itemgroup.boundless_realms.boundless_realms_medical_supplies": "Medical Supplies",
 

@@ -26,6 +26,30 @@ public class ModItems {
     public static final Item AN_ITEM = register("an_item", Item::new, new Item.Settings());
     public static final Item BITCOIN = register("bitcoin", Item::new, new Item.Settings());
     public static final Item RUBY = register("ruby", Item::new, new Item.Settings());
+    /**
+     * Voidsteel Items
+     */
+    public static final Item VOIDSTEEL_INGOT = register("voidsteel_ingot", Item::new,
+            new Item.Settings().fireproof());
+    public static final Item VOIDSTEEL_SWORD = register("voidsteel_sword", Item::new,
+            new Item.Settings().fireproof().sword(ModToolMaterials.VOIDSTEEL, 4.0F, -2.4F));
+    public static final Item VOIDSTEEL_PICKAXE = register("voidsteel_pickaxe", Item::new,
+            new Item.Settings().fireproof().pickaxe(ModToolMaterials.VOIDSTEEL, 2.0F, -2.8F));
+    public static final Item VOIDSTEEL_AXE = register("voidsteel_axe", Item::new,
+            new Item.Settings().fireproof().axe(ModToolMaterials.VOIDSTEEL, 7.0F, -3.0F));
+    public static final Item VOIDSTEEL_SHOVEL = register("voidsteel_shovel", Item::new,
+            new Item.Settings().fireproof().shovel(ModToolMaterials.VOIDSTEEL, 2.5F, -3.0F));
+    public static final Item VOIDSTEEL_HOE = register("voidsteel_hoe", Item::new,
+            new Item.Settings().fireproof().hoe(ModToolMaterials.VOIDSTEEL, -3.0F, 0.0F));
+    public static final Item VOIDSTEEL_HELMET = register("voidsteel_helmet", Item::new,
+            new Item.Settings().fireproof().armor(ModArmorMaterials.VOIDSTEEL, net.minecraft.item.equipment.EquipmentType.HELMET));
+    public static final Item VOIDSTEEL_CHESTPLATE = register("voidsteel_chestplate", Item::new,
+            new Item.Settings().fireproof().armor(ModArmorMaterials.VOIDSTEEL, net.minecraft.item.equipment.EquipmentType.CHESTPLATE));
+    public static final Item VOIDSTEEL_LEGGINGS = register("voidsteel_leggings", Item::new,
+            new Item.Settings().fireproof().armor(ModArmorMaterials.VOIDSTEEL, net.minecraft.item.equipment.EquipmentType.LEGGINGS));
+    public static final Item VOIDSTEEL_BOOTS = register("voidsteel_boots", Item::new,
+            new Item.Settings().fireproof().armor(ModArmorMaterials.VOIDSTEEL, net.minecraft.item.equipment.EquipmentType.BOOTS));
+
     public static final Item FAKE_LUNCH_TICKET = register("fake_lunch_ticket", Item::new, new Item.Settings().maxCount(1));
     public static final Item MONEY = register("money", Item::new, new Item.Settings().maxCount(10000));
     public static final Item LUNCH_TICKET = register("lunch_ticket", LunchTicketItem::new, new Item.Settings().maxCount(1));
