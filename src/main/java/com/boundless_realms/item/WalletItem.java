@@ -83,7 +83,7 @@ public class WalletItem extends Item {
                         if (index < 27) {
                             if (!this.insertItem(stack, 27, this.slots.size(), true)) return ItemStack.EMPTY;
                         } else {
-                            if (!this.slots.getFirst().canInsert(stack) || !this.insertItem(stack, 0, 27, false)) {
+                            if (!this.insertItem(stack, 0, 27, false)) {
                                 return ItemStack.EMPTY;
                             }
                         }
@@ -107,10 +107,6 @@ public class WalletItem extends Item {
     @Override
     public boolean canBeNested() {
         return false;
-    }
-
-    private static boolean isValidWalletContent(ItemStack stack) {
-        return stack.isOf(ModItems.MONEY) && stack.getItem().canBeNested();
     }
 
     private static ItemStack findWalletStack(PlayerEntity player) {
@@ -137,7 +133,7 @@ public class WalletItem extends Item {
 
         @Override
         public boolean canInsert(ItemStack stack) {
-            return isValidWalletContent(stack);
+            return stack.isOf(ModItems.MONEY) && stack.getItem().canBeNested();
         }
     }
 }
