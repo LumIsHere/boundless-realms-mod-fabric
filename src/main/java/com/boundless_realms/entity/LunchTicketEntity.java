@@ -43,7 +43,6 @@ public class LunchTicketEntity extends ThrownItemEntity {
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
 
-        // This removes the entity from the world immediately
         if (!this.getEntityWorld().isClient()) {
             this.discard();
         }
