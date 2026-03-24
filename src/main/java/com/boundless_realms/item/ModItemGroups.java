@@ -1,6 +1,7 @@
 package com.boundless_realms.item;
 
 import com.boundless_realms.BoundlessRealmsMod;
+import com.boundless_realms.block.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -27,6 +28,7 @@ public class ModItemGroups {
                         entries.add(ModItems.WALLET);
                         entries.add(ModItems.TICKET_INSPECTOR_SPAWN_EGG);
                         entries.add(ModItems.BITCOIN);
+                        entries.add(ModBlocks.BITCOIN_MINER);
                     })
                     .build());
 

@@ -1,7 +1,9 @@
 {
   "block.boundless_realms.nether_furnace": "Nether Furnace",
+  "block.boundless_realms.bitcoin_miner": "Bitcoin Miner",
 
   "container.nether_furnace": "Nether Furnace",
+  "container.boundless_realms.bitcoin_miner": "Bitcoin Miner",
 
   "item.boundless_realms.taiga_1_survival_machete": "Taiga 1 Survival Machete",
   "item.boundless_realms.wither_fury": "Wither Fury",

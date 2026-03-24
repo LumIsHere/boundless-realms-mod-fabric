@@ -62,7 +62,11 @@ public class ModItems {
     /**
      * Digital Items
      */
-    public static final Item ASUS_GTX_750TI = register("asus_gtx_750ti", Item::new, new Item.Settings());
+    public static final GraphicsCardItem ASUS_GTX_750TI = register(
+            "asus_gtx_750ti",
+            settings -> new GraphicsCardItem(settings, 1000),
+            new Item.Settings()
+    );
     public static final Item DUAL_FAN_COOLING_SYSTEM = register("dual_fan_cooling_system", Item::new, new Item.Settings());
     public static final Item HEAT_SINK = register("heat_sink", Item::new, new Item.Settings());
     public static final Item PCIE_GOLD_FINGERS = register("pcie_gold_fingers", Item::new, new Item.Settings());

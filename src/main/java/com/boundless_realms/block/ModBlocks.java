@@ -21,6 +21,12 @@ public class ModBlocks {
             AbstractBlock.Settings.create(),
             true
     );
+    public static final Block BITCOIN_MINER = register(
+            "bitcoin_miner",
+            BitcoinMinerBlock::new,
+            AbstractBlock.Settings.create().strength(4.0f).mapColor(MapColor.IRON_GRAY).requiresTool(),
+            true
+    );
 
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         Identifier id = Identifier.of(BoundlessRealmsMod.MOD_ID, name);

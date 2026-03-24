@@ -1,6 +1,7 @@
 package com.boundless_realms.block;
 
 import com.boundless_realms.BoundlessRealmsMod;
+import com.boundless_realms.block.entity.BitcoinMinerBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,6 +13,11 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 public class ModBlockEntities {
+    public static final BlockEntityType<BitcoinMinerBlockEntity> BITCOIN_MINER = register(
+            "bitcoin_miner",
+            BitcoinMinerBlockEntity::new,
+            ModBlocks.BITCOIN_MINER
+    );
 
     public static void registerBlockEntities() {
         BoundlessRealmsMod.LOGGER.info("Registering Block Entities for " + BoundlessRealmsMod.MOD_ID);

@@ -7,6 +7,7 @@ import com.boundless_realms.entity.ModEntities;
 import com.boundless_realms.item.ModItemGroups;
 import com.boundless_realms.item.ModItems;
 import com.boundless_realms.recipe.ModRecipeTypes;
+import com.boundless_realms.screen.ModScreenHandlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class BoundlessRealmsMod implements ModInitializer {
 		ModItemGroups.registerItemGroups();
         ModBlocks.registerModBlocks();
         ModBlockEntities.registerBlockEntities();
+        ModScreenHandlers.registerScreenHandlers();
         ModRecipeTypes.registerRecipes();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
