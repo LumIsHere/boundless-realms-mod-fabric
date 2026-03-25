@@ -19,6 +19,7 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class LunchTicketItem extends Item {
     private static final int COST = 44;
+    private static final int USE_COOLDOWN_TICKS = 15 * 20;
 
     public LunchTicketItem(Settings settings) {
         super(settings);
@@ -63,6 +64,7 @@ public class LunchTicketItem extends Item {
             world.spawnEntity(projectile);
         }
 
+        player.getItemCooldownManager().set(stack, USE_COOLDOWN_TICKS);
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.PLAYERS, 0.5F, 1.0F);
         return true;
     }
