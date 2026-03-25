@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "b o",
+    " p ",
+    "o b"
+  ],
+  "key": {
+    "b": "blue_dye",
+    "p": "paper",
+    "o": "orange_dye"
+  },
+  "result": {
+    "id": "boundless_realms:fake_lunch_ticket",
+    "count": 1
+  }
+}

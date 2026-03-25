@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "bto",
+    "cpn",
+    "otb"
+  ],
+  "key": {
+    "b": "blue_dye",
+    "t": "minecraft:tnt",
+    "c": "crossbow",
+    "p": "paper",
+    "n": "minecraft:nether_star",
+    "o": "orange_dye"
+  },
+  "result": {
+    "id": "boundless_realms:lunch_ticket",
+    "count": 1
+  }
+}
