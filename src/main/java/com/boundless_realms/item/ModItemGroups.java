@@ -26,6 +26,10 @@ public class ModItemGroups {
                         entries.add(ModItems.VOIDSTEEL_CHESTPLATE);
                         entries.add(ModItems.VOIDSTEEL_LEGGINGS);
                         entries.add(ModItems.VOIDSTEEL_BOOTS);
+                        entries.add(ModItems.EMERALD_HELMET);
+                        entries.add(ModItems.EMERALD_CHESTPLATE);
+                        entries.add(ModItems.EMERALD_LEGGINGS);
+                        entries.add(ModItems.EMERALD_BOOTS);
                     })
                     .build());
 

@@ -3,7 +3,9 @@
 	"package": "com.boundless_realms.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"AnvilScreenHandlerMixin",
+		"ExampleMixin",
+		"VillagerEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

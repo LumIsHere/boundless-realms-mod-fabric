@@ -50,6 +50,14 @@ public class ModItems {
             voidsteelSettings().armor(ModArmorMaterials.VOIDSTEEL, net.minecraft.item.equipment.EquipmentType.LEGGINGS));
     public static final Item VOIDSTEEL_BOOTS = register("voidsteel_boots", Item::new,
             voidsteelSettings().armor(ModArmorMaterials.VOIDSTEEL, net.minecraft.item.equipment.EquipmentType.BOOTS));
+    public static final Item EMERALD_HELMET = register("emerald_helmet", Item::new,
+            new Item.Settings().armor(ModArmorMaterials.EMERALD, net.minecraft.item.equipment.EquipmentType.HELMET));
+    public static final Item EMERALD_CHESTPLATE = register("emerald_chestplate", Item::new,
+            new Item.Settings().armor(ModArmorMaterials.EMERALD, net.minecraft.item.equipment.EquipmentType.CHESTPLATE));
+    public static final Item EMERALD_LEGGINGS = register("emerald_leggings", Item::new,
+            new Item.Settings().armor(ModArmorMaterials.EMERALD, net.minecraft.item.equipment.EquipmentType.LEGGINGS));
+    public static final Item EMERALD_BOOTS = register("emerald_boots", Item::new,
+            new Item.Settings().armor(ModArmorMaterials.EMERALD, net.minecraft.item.equipment.EquipmentType.BOOTS));
 
     public static final Item FAKE_LUNCH_TICKET = register("fake_lunch_ticket", Item::new, new Item.Settings().maxCount(1));
     public static final Item MONEY = register("money", Item::new, new Item.Settings().maxCount(10000));
