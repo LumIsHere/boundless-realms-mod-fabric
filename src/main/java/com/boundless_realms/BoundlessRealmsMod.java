@@ -4,6 +4,7 @@ import com.boundless_realms.block.ModBlockEntities;
 import com.boundless_realms.block.ModBlocks;
 import com.boundless_realms.command.InspectorAnswerCommand;
 import com.boundless_realms.entity.ModEntities;
+import com.boundless_realms.item.EmeraldGearEffects;
 import com.boundless_realms.item.ModItemGroups;
 import com.boundless_realms.item.ModItems;
 import com.boundless_realms.item.VoidsteelGearEffects;
@@ -24,9 +25,10 @@ public class BoundlessRealmsMod implements ModInitializer {
 		ModItems.registerModItems();
 		ModItemGroups.registerItemGroups();
         ModBlocks.registerModBlocks();
-		ModBlockEntities.registerBlockEntities();
+        ModBlockEntities.registerBlockEntities();
         ModScreenHandlers.registerScreenHandlers();
         ModRecipeTypes.registerRecipes();
+        EmeraldGearEffects.register();
 		VoidsteelGearEffects.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->

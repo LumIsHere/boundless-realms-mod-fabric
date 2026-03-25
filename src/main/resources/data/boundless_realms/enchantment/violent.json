@@ -1,0 +1,22 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "translate": "enchantment.boundless_realms.violent"
+  },
+  "effects": {},
+  "max_cost": {
+    "base": 50,
+    "per_level_above_first": 12
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 20,
+    "per_level_above_first": 12
+  },
+  "primary_items": "#boundless_realms:enchantable/wither_fury",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#boundless_realms:enchantable/wither_fury",
+  "weight": 1
+}
