@@ -42,7 +42,7 @@ public class ModItemGroups {
                         entries.accept(ModItems.MONEY);
                         entries.accept(ModItems.TAIGA_ONE_SURVIVAL_MACHETE);
                         entries.accept(ModItems.BEDROCK_GAUNTLET);
-                        entries.accept(ModItems.WITHER_FURY);
+                        entries.accept(ModItems.WITHER_FURRY);
                         entries.accept(ModItems.BACKSTAB_TOTEM);
                         entries.accept(ModItems.ANGLERFISH_MASK);
                         entries.accept(ModItems.LUNCH_TICKET);

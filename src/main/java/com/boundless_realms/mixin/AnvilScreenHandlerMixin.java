@@ -21,14 +21,14 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
     }
 
     @Inject(method = "createResult", at = @At("TAIL"))
-    private void boundlessRealms$restrictWitherFuryEnchantments(CallbackInfo ci) {
+    private void boundlessRealms$restrictWitherFurryEnchantments(CallbackInfo ci) {
         ItemStack baseStack = this.inputSlots.getItem(0);
         ItemStack resultStack = this.resultSlots.getItem(0);
-        if (resultStack.isEmpty() || baseStack.getItem() == ModItems.WITHER_FURY) {
+        if (resultStack.isEmpty() || baseStack.getItem() == ModItems.WITHER_FURRY) {
             return;
         }
 
-        if (ModEnchantments.hasWitherFuryExclusiveEnchantments(this.player.level(), resultStack)) {
+        if (ModEnchantments.hasWitherFurryExclusiveEnchantments(this.player.level(), resultStack)) {
             this.resultSlots.setItem(0, ItemStack.EMPTY);
             this.broadcastChanges();
         }

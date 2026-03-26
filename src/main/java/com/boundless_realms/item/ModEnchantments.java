@@ -27,7 +27,7 @@ public final class ModEnchantments {
         return EnchantmentHelper.getItemEnchantmentLevel(enchantmentRegistry.wrapAsHolder(enchantment), stack);
     }
 
-    public static boolean hasWitherFuryExclusiveEnchantments(Level world, ItemStack stack) {
+    public static boolean hasWitherFurryExclusiveEnchantments(Level world, ItemStack stack) {
         return getLevel(world, stack, FURIOUS) > 0 || getLevel(world, stack, VIOLENT) > 0;
     }
 

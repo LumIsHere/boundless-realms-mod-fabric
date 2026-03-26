@@ -69,7 +69,7 @@ public class ModItems {
                     .stacksTo(1)
                     .attributes(createBedrockGauntletAttributes())
     );
-    public static final Item WITHER_FURY = register("wither_fury", WitherFuryItem::new,
+    public static final Item WITHER_FURRY = register("wither_furry", WitherFurryItem::new,
             new Item.Properties().sword(ToolMaterial.DIAMOND, 3f, -2.4f));
     public static final Item TAIGA_ONE_SURVIVAL_MACHETE = register("taiga_1_survival_machete", Item::new,
             new Item.Properties().sword(ToolMaterial.NETHERITE, 6.0F, -3.0F));
