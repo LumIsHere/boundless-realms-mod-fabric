@@ -4,7 +4,7 @@ import com.boundless_realms.block.ModBlockEntities;
 import com.boundless_realms.item.GraphicsCardItem;
 import com.boundless_realms.item.ModItems;
 import com.boundless_realms.screen.BitcoinMinerScreenHandler;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class BitcoinMinerBlockEntity extends BaseContainerBlockEntity implements ExtendedScreenHandlerFactory<BlockPos> {
+public class BitcoinMinerBlockEntity extends BaseContainerBlockEntity implements ExtendedMenuProvider<BlockPos> {
     public static final int INPUT_SLOT_COUNT = 10;
     public static final int OUTPUT_SLOT = 10;
     public static final int TOTAL_SLOTS = 11;

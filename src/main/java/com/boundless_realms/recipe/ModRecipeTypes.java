@@ -11,7 +11,10 @@ import net.minecraft.world.item.crafting.RecipeType;
 public class ModRecipeTypes {
     public static final RecipeSerializer<NetherSmeltingRecipe> NETHER_SMELTING_SERIALIZER =
             Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "nether_smelting"),
-                    new AbstractCookingRecipe.Serializer<>(NetherSmeltingRecipe::new, 200));
+                    new RecipeSerializer<>(
+                            AbstractCookingRecipe.cookingMapCodec(NetherSmeltingRecipe::new, 200),
+                            AbstractCookingRecipe.cookingStreamCodec(NetherSmeltingRecipe::new)
+                    ));
 
     public static final RecipeType<NetherSmeltingRecipe> NETHER_SMELTING =
             Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "nether_smelting"),

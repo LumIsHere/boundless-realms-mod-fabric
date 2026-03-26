@@ -29,7 +29,7 @@ public class LunchTicketItem extends Item {
     public InteractionResult use(Level world, Player user, InteractionHand hand) {
         if (!user.getAbilities().instabuild && countTotalMoney(user) < COST) {
             if (!world.isClientSide()) {
-                user.displayClientMessage(Component.translatable("notification.lunch_ticket.no_enough_money", COST), true);
+                user.sendOverlayMessage(Component.translatable("notification.lunch_ticket.no_enough_money", COST));
             }
             return InteractionResult.FAIL;
         }
@@ -79,7 +79,7 @@ public class LunchTicketItem extends Item {
             } else if (stack.getItem() instanceof WalletItem) {
                 ItemContainerContents container = stack.get(DataComponents.CONTAINER);
                 if (container != null) {
-                    total += container.stream()
+                    total += container.nonEmptyItemCopyStream()
                             .filter(item -> item.is(ModItems.MONEY))
                             .mapToInt(ItemStack::getCount)
                             .sum();
@@ -104,8 +104,7 @@ public class LunchTicketItem extends Item {
             else if (stack.getItem() instanceof WalletItem) {
                 ItemContainerContents container = stack.get(DataComponents.CONTAINER);
                 if (container != null) {
-                    int size = (int) container.stream().count();
-                    NonNullList<ItemStack> contents = NonNullList.withSize(size, ItemStack.EMPTY);
+                    NonNullList<ItemStack> contents = NonNullList.withSize(27, ItemStack.EMPTY);
 
                     container.copyInto(contents);
 

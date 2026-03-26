@@ -24,7 +24,7 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
     private void boundlessRealms$restrictWitherFurryEnchantments(CallbackInfo ci) {
         ItemStack baseStack = this.inputSlots.getItem(0);
         ItemStack resultStack = this.resultSlots.getItem(0);
-        if (resultStack.isEmpty() || baseStack.getItem() == ModItems.WITHER_FURRY) {
+        if (resultStack.isEmpty() || baseStack.getItem() == ModItems.WITHER_FURY) {
             return;
         }
 

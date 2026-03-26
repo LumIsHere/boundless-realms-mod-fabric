@@ -126,10 +126,7 @@ public class TicketInspectorEntity extends Villager {
             stolenTicket = stealLunchTicket(targetPlayer);
 
             if (stolenTicket.isEmpty()) {
-                targetPlayer.displayClientMessage(
-                        Component.translatable("dialogue.boundless_realms.inspector.no_ticket"),
-                        false
-                );
+                sendPlayerMessage(targetPlayer, Component.translatable("dialogue.boundless_realms.inspector.no_ticket"), false);
                 beginLeaving();
                 return;
             }
@@ -172,10 +169,7 @@ public class TicketInspectorEntity extends Villager {
     }
 
     private void sendQuestion(Player player) {
-        player.displayClientMessage(
-                Component.translatable("dialogue.boundless_realms.inspector.question"),
-                false
-        );
+        sendPlayerMessage(player, Component.translatable("dialogue.boundless_realms.inspector.question"), false);
 
         Component yesButton = Component.translatable("dialogue.boundless_realms.inspector.answer_yes")
                 .withStyle(style -> style.withClickEvent(
@@ -187,10 +181,7 @@ public class TicketInspectorEntity extends Villager {
                         new ClickEvent.RunCommand("/inspector_answer no")
                 ));
 
-        player.displayClientMessage(
-                Component.empty().append(yesButton).append(Component.literal("  ")).append(noButton1),
-                false
-        );
+        sendPlayerMessage(player, Component.empty().append(yesButton).append(Component.literal("  ")).append(noButton1), false);
     }
 
     public boolean isWaitingFor(Player player) {
@@ -206,10 +197,7 @@ public class TicketInspectorEntity extends Villager {
 
         playerClaimedRealTicketWasFake = false;
 
-        player.displayClientMessage(
-                Component.translatable("dialogue.boundless_realms.inspector.thinking"),
-                false
-        );
+        sendPlayerMessage(player, Component.translatable("dialogue.boundless_realms.inspector.thinking"), false);
 
         inspectorState = InspectorState.THINKING;
         stateTimer = 40;
@@ -221,7 +209,7 @@ public class TicketInspectorEntity extends Villager {
         }
 
         if (stolenTicketIsFake) {
-            player.displayClientMessage(Component.translatable("dialogue.boundless_realms.inspector.honest"), false);
+            sendPlayerMessage(player, Component.translatable("dialogue.boundless_realms.inspector.honest"), false);
 
             if (player.level() instanceof ServerLevel serverWorld) {
                 player.hurtServer(serverWorld, createTooHonestDamageSource(serverWorld), Float.MAX_VALUE);
@@ -235,10 +223,7 @@ public class TicketInspectorEntity extends Villager {
         }
 
         playerClaimedRealTicketWasFake = true;
-        player.displayClientMessage(
-                Component.translatable("dialogue.boundless_realms.inspector.self_doubt"),
-                false
-        );
+        sendPlayerMessage(player, Component.translatable("dialogue.boundless_realms.inspector.self_doubt"), false);
         inspectorState = InspectorState.THINKING;
         stateTimer = 40;
     }
@@ -266,10 +251,7 @@ public class TicketInspectorEntity extends Villager {
 
         if (stolenTicketIsFake && this.getRandom().nextFloat() >= 0.2F) {
             targetPlayer.setHealth(1.0F);
-            targetPlayer.displayClientMessage(
-                    Component.translatable("dialogue.boundless_realms.inspector.fake"),
-                    false
-            );
+            sendPlayerMessage(targetPlayer, Component.translatable("dialogue.boundless_realms.inspector.fake"), false);
             stolenTicket = ItemStack.EMPTY;
             stolenTicketIsFake = false;
             playerClaimedRealTicketWasFake = false;
@@ -281,10 +263,7 @@ public class TicketInspectorEntity extends Villager {
 
     private void confiscateTicketAndWarn() {
         if (targetPlayer != null) {
-            targetPlayer.displayClientMessage(
-                    Component.translatable("dialogue.boundless_realms.inspector.warning"),
-                    false
-            );
+            sendPlayerMessage(targetPlayer, Component.translatable("dialogue.boundless_realms.inspector.warning"), false);
         }
 
         stolenTicket = ItemStack.EMPTY;
@@ -313,10 +292,7 @@ public class TicketInspectorEntity extends Villager {
 
             itemEntity.setDeltaMovement(direction.x, 0.25, direction.z);
 
-            targetPlayer.displayClientMessage(
-                    Component.translatable("dialogue.boundless_realms.inspector.return"),
-                    false
-            );
+            sendPlayerMessage(targetPlayer, Component.translatable("dialogue.boundless_realms.inspector.return"), false);
         }
 
         world.addFreshEntity(itemEntity);
@@ -355,6 +331,15 @@ public class TicketInspectorEntity extends Villager {
         stolenTicketIsFake = false;
         playerClaimedRealTicketWasFake = false;
         stateTimer = 0;
+    }
+
+    private static void sendPlayerMessage(Player player, Component message, boolean overlay) {
+        if (overlay) {
+            player.sendOverlayMessage(message);
+            return;
+        }
+
+        player.sendSystemMessage(message);
     }
 
     private boolean hasLunchTicketInHand(Player player) {

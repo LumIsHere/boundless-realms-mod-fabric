@@ -14,7 +14,7 @@ public final class EmeraldGearEffects {
     }
 
     public static void register() {
-        ServerTickEvents.END_WORLD_TICK.register(EmeraldGearEffects::onEndWorldTick);
+        ServerTickEvents.END_LEVEL_TICK.register(EmeraldGearEffects::onEndWorldTick);
     }
 
     public static boolean hasFullEmeraldSet(Player player) {

@@ -22,7 +22,7 @@ public final class VoidsteelGearEffects {
     }
 
     public static void register() {
-        ServerTickEvents.END_WORLD_TICK.register(VoidsteelGearEffects::onEndWorldTick);
+        ServerTickEvents.END_LEVEL_TICK.register(VoidsteelGearEffects::onEndWorldTick);
     }
 
     @SuppressWarnings("resource")

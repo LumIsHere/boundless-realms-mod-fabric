@@ -49,12 +49,11 @@ public class BackstabTotemItem extends Item {
                         target.getEyePosition()
                 );
 
-                user.displayClientMessage(
+                user.sendOverlayMessage(
                         net.minecraft.network.chat.Component.translatable(
                                 "teleported_to_target_backstab_totem",
                                 target.getDisplayName()
-                        ),
-                        true
+                        )
                 );
 
                 user.getCooldowns().addCooldown(stack, 100);
@@ -62,9 +61,8 @@ public class BackstabTotemItem extends Item {
             }
 
             if (target == null) {
-                user.displayClientMessage(
-                        net.minecraft.network.chat.Component.translatable("notification_no_target_backstab_totem"),
-                        true
+                user.sendOverlayMessage(
+                        net.minecraft.network.chat.Component.translatable("notification_no_target_backstab_totem")
                 );
             }
             // Cooldown

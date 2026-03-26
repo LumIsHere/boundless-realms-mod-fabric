@@ -2,7 +2,7 @@ package com.boundless_realms.item;
 
 import com.boundless_realms.BoundlessRealmsMod;
 import com.boundless_realms.block.ModBlocks;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 public class ModItemGroups {
     public static final CreativeModeTab BOUNDLESS_GEARS_GROUP = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "boundless_gears"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.VOIDSTEEL_CHESTPLATE))
+            FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.VOIDSTEEL_CHESTPLATE))
                     .title(Component.translatable("itemgroup.boundless_realms.boundless_gears"))
                     .displayItems((displayContext, entries) -> {
                         entries.accept(ModItems.VOIDSTEEL_INGOT);
@@ -35,14 +35,14 @@ public class ModItemGroups {
 
     public static final CreativeModeTab BOUNDLESS_REALMS_GENERAL_GROUP = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "boundless_realms_general"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.RUBY))
+            FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.RUBY))
                     .title(Component.translatable("itemgroup.boundless_realms.boundless_realms_general"))
                     .displayItems((displayContext, entries) -> {
                         entries.accept(ModItems.RUBY);
                         entries.accept(ModItems.MONEY);
                         entries.accept(ModItems.TAIGA_ONE_SURVIVAL_MACHETE);
                         entries.accept(ModItems.BEDROCK_GAUNTLET);
-                        entries.accept(ModItems.WITHER_FURRY);
+                        entries.accept(ModItems.WITHER_FURY);
                         entries.accept(ModItems.BACKSTAB_TOTEM);
                         entries.accept(ModItems.ANGLERFISH_MASK);
                         entries.accept(ModItems.LUNCH_TICKET);
@@ -56,7 +56,7 @@ public class ModItemGroups {
 
     public static final CreativeModeTab BOUNDLESS_REALMS_MEDICAL_SUPPLIES_GROUP = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "boundless_realms_medical_supplies"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.AFAK_MED_KIT))
+            FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.AFAK_MED_KIT))
                     .title(Component.translatable("itemgroup.boundless_realms.boundless_realms_medical_supplies"))
                     .displayItems((displayContext, entries) -> {
                         entries.accept(ModItems.AFAK_MED_KIT);
@@ -65,7 +65,7 @@ public class ModItemGroups {
 
     public static final CreativeModeTab DIGITAL_ITEMS_GROUP = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "digital_items"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.ASUS_GTX_750TI))
+            FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.ASUS_GTX_750TI))
                     .title(Component.translatable("itemgroup.boundless_realms.digital_items"))
                     .displayItems(((displayContext, entries) -> {
                         entries.accept(ModItems.ASUS_GTX_750TI);

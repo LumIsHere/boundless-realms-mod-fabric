@@ -31,7 +31,7 @@ public class WalletItem extends Item {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
         ItemContainerContents container = stack.get(DataComponents.CONTAINER);
         if (container != null) {
-            int totalMoney = (int) container.stream()
+            int totalMoney = (int) container.nonEmptyItemCopyStream()
                     .filter(is -> is.is(ModItems.MONEY))
                     .mapToLong(ItemStack::getCount)
                     .sum();
