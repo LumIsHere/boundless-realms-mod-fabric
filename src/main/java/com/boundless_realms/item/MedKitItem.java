@@ -1,54 +1,54 @@
 package com.boundless_realms.item;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.consume.UseAction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ActionResult;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.level.Level;
 
 public class MedKitItem extends Item {
     private final float healAmount;
     private final int useTime;
 
-    public MedKitItem(Settings settings, float healAmount, int useTime) {
+    public MedKitItem(Properties settings, float healAmount, int useTime) {
         super(settings);
         this.healAmount = healAmount;
         this.useTime = useTime;
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        ItemStack itemStack = user.getItemInHand(hand);
         if (user.getHealth() < user.getMaxHealth()) {
-            user.setCurrentHand(hand);
-            return ActionResult.CONSUME;
+            user.startUsingItem(hand);
+            return InteractionResult.CONSUME;
         }
-        return ActionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        if (!world.isClient()) {
+    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
+        if (!world.isClientSide()) {
             user.heal(this.healAmount);
         }
 
-        if (!(user instanceof PlayerEntity player) || !player.getAbilities().creativeMode) {
-            stack.decrement(1);
+        if (!(user instanceof Player player) || !player.getAbilities().instabuild) {
+            stack.shrink(1);
         }
 
         return stack;
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+    public int getUseDuration(ItemStack stack, LivingEntity user) {
         return this.useTime;
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW;
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.BOW;
     }
 }

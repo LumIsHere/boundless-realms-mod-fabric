@@ -1,35 +1,35 @@
 package com.boundless_realms.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.DrownedEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.monster.zombie.Drowned;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class AnglerfishMaskItem extends Item {
-    public AnglerfishMaskItem(Settings settings) {
+    public AnglerfishMaskItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
-        if (world.isClient()) return;
+    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, @Nullable EquipmentSlot slot) {
+        if (world.isClientSide()) return;
 
-        if (entity instanceof PlayerEntity player) {
-            ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
+        if (entity instanceof Player player) {
+            ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 
             if (headStack == stack) {
-                if (player.isSubmergedInWater()) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 20 * 11, 0, false, false, true));
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 20 * 11, 0, false, false, true));
+                if (player.isUnderWater()) {
+                    player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 20 * 11, 0, false, false, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 20 * 11, 0, false, false, true));
                 }
 
                 repelDrowneds(world, player);
@@ -38,30 +38,30 @@ public class AnglerfishMaskItem extends Item {
         super.inventoryTick(stack, world, entity, slot);
     }
 
-    private void repelDrowneds(World world, PlayerEntity player) {
-        List<DrownedEntity> drowneds = world.getEntitiesByClass(DrownedEntity.class,
-                player.getBoundingBox().expand(12.0),
+    private void repelDrowneds(Level world, Player player) {
+        List<Drowned> drowneds = world.getEntitiesOfClass(Drowned.class,
+                player.getBoundingBox().inflate(12.0),
                 drowned -> true);
 
-        for (DrownedEntity drowned : drowneds) {
-            if (drowned.getTarget() == player || drowned.getAttacker() == player) {
+        for (Drowned drowned : drowneds) {
+            if (drowned.getTarget() == player || drowned.getLastHurtByMob() == player) {
 
                 drowned.setTarget(null);
-                drowned.setAttacker(null);
-                drowned.setAttacking(false);
+                drowned.setLastHurtByMob(null);
+                drowned.setAggressive(false);
 
                 double diffX = drowned.getX() - player.getX();
                 double diffZ = drowned.getZ() - player.getZ();
 
 
                 if (drowned.distanceTo(player) < 3.0) {
-                    drowned.takeKnockback(0.5, -diffX, -diffZ);
+                    drowned.knockback(0.5, -diffX, -diffZ);
                 }
 
                 double fleeX = drowned.getX() + (diffX * 2);
                 double fleeZ = drowned.getZ() + (diffZ * 2);
 
-                drowned.getNavigation().startMovingTo(fleeX, drowned.getY(), fleeZ, 1.2);
+                drowned.getNavigation().moveTo(fleeX, drowned.getY(), fleeZ, 1.2);
             }
         }
     }

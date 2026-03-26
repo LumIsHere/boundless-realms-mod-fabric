@@ -1,70 +1,69 @@
 package com.boundless_realms.item;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ContainerComponent;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.Level;
 
 public class WalletItem extends Item {
-    private static final Text TITLE = Text.translatable("item.boundless_realms.wallet");
+    private static final Component TITLE = Component.translatable("item.boundless_realms.wallet");
 
-    public WalletItem(Settings settings) {
-        super(settings.maxCount(1));
+    public WalletItem(Properties settings) {
+        super(settings.stacksTo(1));
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
+        ItemContainerContents container = stack.get(DataComponents.CONTAINER);
         if (container != null) {
             int totalMoney = (int) container.stream()
-                    .filter(is -> is.isOf(ModItems.MONEY))
+                    .filter(is -> is.is(ModItems.MONEY))
                     .mapToLong(ItemStack::getCount)
                     .sum();
 
             if (totalMoney > 0) {
-                textConsumer.accept(Text.translatable("tooltip.boundless_realms.wallet.money", totalMoney).formatted(Formatting.GOLD));
+                textConsumer.accept(Component.translatable("tooltip.boundless_realms.wallet.money", totalMoney).withStyle(ChatFormatting.GOLD));
             } else {
-                textConsumer.accept(Text.translatable("tooltip.boundless_realms.wallet.empty").formatted(Formatting.GRAY));
+                textConsumer.accept(Component.translatable("tooltip.boundless_realms.wallet.empty").withStyle(ChatFormatting.GRAY));
             }
         }
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient()) {
-            ItemStack initialStack = user.getStackInHand(hand);
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        if (!world.isClientSide()) {
+            ItemStack initialStack = user.getItemInHand(hand);
 
-            SimpleInventory inventory = new SimpleInventory(27) {
+            SimpleContainer inventory = new SimpleContainer(27) {
                 @Override
-                public void markDirty() {
-                    super.markDirty();
+                public void setChanged() {
+                    super.setChanged();
                     updateWalletComponent(user, this);
                 }
             };
 
-            ContainerComponent currentContents = initialStack.get(DataComponentTypes.CONTAINER);
+            ItemContainerContents currentContents = initialStack.get(DataComponents.CONTAINER);
             if (currentContents != null) {
-                currentContents.copyTo(inventory.getHeldStacks());
+                currentContents.copyInto(inventory.getItems());
             }
 
-            user.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, playerInv, player) -> {
-                return new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, syncId, playerInv, inventory, 3) {
+            user.openMenu(new SimpleMenuProvider((syncId, playerInv, player) -> {
+                return new ChestMenu(MenuType.GENERIC_9x3, syncId, playerInv, inventory, 3) {
                     {
                         for (int i = 0; i < 27; i++) {
                             Slot oldSlot = this.slots.get(i);
@@ -73,67 +72,67 @@ public class WalletItem extends Item {
                     }
 
                     @Override
-                    public ItemStack quickMove(PlayerEntity player, int index) {
+                    public ItemStack quickMoveStack(Player player, int index) {
                         Slot slot = this.slots.get(index);
-                        if (slot == null || !slot.hasStack()) return ItemStack.EMPTY;
+                        if (slot == null || !slot.hasItem()) return ItemStack.EMPTY;
 
-                        ItemStack stack = slot.getStack();
+                        ItemStack stack = slot.getItem();
                         ItemStack originalStack = stack.copy();
 
                         if (index < 27) {
-                            if (!this.insertItem(stack, 27, this.slots.size(), true)) return ItemStack.EMPTY;
+                            if (!this.moveItemStackTo(stack, 27, this.slots.size(), true)) return ItemStack.EMPTY;
                         } else {
-                            if (!this.insertItem(stack, 0, 27, false)) {
+                            if (!this.moveItemStackTo(stack, 0, 27, false)) {
                                 return ItemStack.EMPTY;
                             }
                         }
 
-                        if (stack.isEmpty()) slot.setStack(ItemStack.EMPTY);
-                        else slot.markDirty();
+                        if (stack.isEmpty()) slot.setByPlayer(ItemStack.EMPTY);
+                        else slot.setChanged();
 
                         return originalStack;
                     }
 
                     @Override
-                    public boolean canUse(PlayerEntity player) {
+                    public boolean stillValid(Player player) {
                         return !findWalletStack(player).isEmpty();
                     }
                 };
             }, TITLE));
         }
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public boolean canBeNested() {
+    public boolean canFitInsideContainerItems() {
         return false;
     }
 
-    private static ItemStack findWalletStack(PlayerEntity player) {
-        if (player.getMainHandStack().getItem() instanceof WalletItem) return player.getMainHandStack();
-        if (player.getOffHandStack().getItem() instanceof WalletItem) return player.getOffHandStack();
-        for (int i = 0; i < player.getInventory().size(); i++) {
-            ItemStack stack = player.getInventory().getStack(i);
+    private static ItemStack findWalletStack(Player player) {
+        if (player.getMainHandItem().getItem() instanceof WalletItem) return player.getMainHandItem();
+        if (player.getOffhandItem().getItem() instanceof WalletItem) return player.getOffhandItem();
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
             if (stack.getItem() instanceof WalletItem) return stack;
         }
         return ItemStack.EMPTY;
     }
 
-    private static void updateWalletComponent(PlayerEntity player, SimpleInventory inventory) {
+    private static void updateWalletComponent(Player player, SimpleContainer inventory) {
         ItemStack wallet = findWalletStack(player);
         if (!wallet.isEmpty()) {
-            wallet.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(inventory.getHeldStacks()));
+            wallet.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(inventory.getItems()));
         }
     }
 
     private static class WalletSlot extends Slot {
-        public WalletSlot(Inventory inventory, int index, int x, int y) {
+        public WalletSlot(Container inventory, int index, int x, int y) {
             super(inventory, index, x, y);
         }
 
         @Override
-        public boolean canInsert(ItemStack stack) {
-            return stack.isOf(ModItems.MONEY) && stack.getItem().canBeNested();
+        public boolean mayPlace(ItemStack stack) {
+            return stack.is(ModItems.MONEY) && stack.getItem().canFitInsideContainerItems();
         }
     }
 }

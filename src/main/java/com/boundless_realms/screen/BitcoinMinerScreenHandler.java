@@ -3,17 +3,17 @@ package com.boundless_realms.screen;
 import com.boundless_realms.block.ModBlocks;
 import com.boundless_realms.block.entity.BitcoinMinerBlockEntity;
 import com.boundless_realms.item.GraphicsCardItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
-public class BitcoinMinerScreenHandler extends ScreenHandler {
+public class BitcoinMinerScreenHandler extends AbstractContainerMenu {
     private static final int INPUT_START = 0;
     private static final int INPUT_END = BitcoinMinerBlockEntity.INPUT_SLOT_COUNT;
     private static final int OUTPUT_SLOT = BitcoinMinerBlockEntity.OUTPUT_SLOT;
@@ -23,33 +23,33 @@ public class BitcoinMinerScreenHandler extends ScreenHandler {
     private static final int HOTBAR_START = PLAYER_INVENTORY_END;
     private static final int HOTBAR_END = HOTBAR_START + 9;
 
-    private final Inventory inventory;
-    private final ScreenHandlerContext context;
+    private final Container inventory;
+    private final ContainerLevelAccess context;
 
-    public BitcoinMinerScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, new SimpleInventory(BitcoinMinerBlockEntity.TOTAL_SLOTS), ScreenHandlerContext.EMPTY);
+    public BitcoinMinerScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
+        this(syncId, playerInventory, new SimpleContainer(BitcoinMinerBlockEntity.TOTAL_SLOTS), ContainerLevelAccess.NULL);
     }
 
-    public BitcoinMinerScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        this(syncId, playerInventory, inventory, ScreenHandlerContext.EMPTY);
+    public BitcoinMinerScreenHandler(int syncId, Inventory playerInventory, Container inventory) {
+        this(syncId, playerInventory, inventory, ContainerLevelAccess.NULL);
     }
 
-    public BitcoinMinerScreenHandler(int syncId, PlayerInventory playerInventory, BitcoinMinerBlockEntity blockEntity) {
-        this(syncId, playerInventory, blockEntity, ScreenHandlerContext.create(blockEntity.getWorld(), blockEntity.getPos()));
+    public BitcoinMinerScreenHandler(int syncId, Inventory playerInventory, BitcoinMinerBlockEntity blockEntity) {
+        this(syncId, playerInventory, blockEntity, ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()));
     }
 
     private BitcoinMinerScreenHandler(
             int syncId,
-            PlayerInventory playerInventory,
-            Inventory inventory,
-            ScreenHandlerContext context
+            Inventory playerInventory,
+            Container inventory,
+            ContainerLevelAccess context
     ) {
         super(ModScreenHandlers.BITCOIN_MINER, syncId);
-        checkSize(inventory, BitcoinMinerBlockEntity.TOTAL_SLOTS);
+        checkContainerSize(inventory, BitcoinMinerBlockEntity.TOTAL_SLOTS);
 
         this.inventory = inventory;
         this.context = context;
-        inventory.onOpen(playerInventory.player);
+        inventory.startOpen(playerInventory.player);
 
         int slotIndex = 0;
 
@@ -59,12 +59,12 @@ public class BitcoinMinerScreenHandler extends ScreenHandler {
                 int y = 18 + (row * 18);
                 addSlot(new Slot(inventory, slotIndex++, x, y) {
                     @Override
-                    public boolean canInsert(ItemStack stack) {
+                    public boolean mayPlace(ItemStack stack) {
                         return stack.getItem() instanceof GraphicsCardItem;
                     }
 
                     @Override
-                    public int getMaxItemCount() {
+                    public int getMaxStackSize() {
                         return 1;
                     }
                 });
@@ -73,33 +73,33 @@ public class BitcoinMinerScreenHandler extends ScreenHandler {
 
         addSlot(new Slot(inventory, OUTPUT_SLOT, 134, 27) {
             @Override
-            public boolean canInsert(ItemStack stack) {
+            public boolean mayPlace(ItemStack stack) {
                 return false;
             }
         });
 
-        addPlayerInventorySlots(playerInventory, 8, 84);
-        addPlayerHotbarSlots(playerInventory, 8, 142);
+        addInventoryExtendedSlots(playerInventory, 8, 84);
+        addInventoryHotbarSlots(playerInventory, 8, 142);
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int slotIndex) {
+    public ItemStack quickMoveStack(Player player, int slotIndex) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = slots.get(slotIndex);
 
-        if (!slot.hasStack()) {
+        if (!slot.hasItem()) {
             return ItemStack.EMPTY;
         }
 
-        ItemStack originalStack = slot.getStack();
+        ItemStack originalStack = slot.getItem();
         newStack = originalStack.copy();
 
         if (slotIndex < BLOCK_SLOT_COUNT) {
-            if (!insertItem(originalStack, PLAYER_INVENTORY_START, HOTBAR_END, true)) {
+            if (!moveItemStackTo(originalStack, PLAYER_INVENTORY_START, HOTBAR_END, true)) {
                 return ItemStack.EMPTY;
             }
         } else if (originalStack.getItem() instanceof GraphicsCardItem) {
-            if (!insertItem(originalStack, INPUT_START, INPUT_END, false)) {
+            if (!moveItemStackTo(originalStack, INPUT_START, INPUT_END, false)) {
                 return ItemStack.EMPTY;
             }
         } else {
@@ -107,23 +107,23 @@ public class BitcoinMinerScreenHandler extends ScreenHandler {
         }
 
         if (originalStack.isEmpty()) {
-            slot.setStack(ItemStack.EMPTY);
+            slot.setByPlayer(ItemStack.EMPTY);
         } else {
-            slot.markDirty();
+            slot.setChanged();
         }
 
-        slot.onTakeItem(player, originalStack);
+        slot.onTake(player, originalStack);
         return newStack;
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return canUse(context, player, ModBlocks.BITCOIN_MINER);
+    public boolean stillValid(Player player) {
+        return stillValid(context, player, ModBlocks.BITCOIN_MINER);
     }
 
     @Override
-    public void onClosed(PlayerEntity player) {
-        super.onClosed(player);
-        inventory.onClose(player);
+    public void removed(Player player) {
+        super.removed(player);
+        inventory.stopOpen(player);
     }
 }

@@ -1,37 +1,37 @@
 package com.boundless_realms.item;
 
 import com.boundless_realms.BoundlessRealmsMod;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
 
 public final class ModEnchantments {
-    public static final RegistryKey<Enchantment> FURIOUS = keyOf("furious");
-    public static final RegistryKey<Enchantment> VIOLENT = keyOf("violent");
+    public static final ResourceKey<Enchantment> FURIOUS = keyOf("furious");
+    public static final ResourceKey<Enchantment> VIOLENT = keyOf("violent");
 
     private ModEnchantments() {
     }
 
-    public static int getLevel(World world, ItemStack stack, RegistryKey<Enchantment> enchantmentKey) {
-        Registry<Enchantment> enchantmentRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
-        Enchantment enchantment = enchantmentRegistry.getOptionalValue(enchantmentKey).orElse(null);
+    public static int getLevel(Level world, ItemStack stack, ResourceKey<Enchantment> enchantmentKey) {
+        Registry<Enchantment> enchantmentRegistry = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Enchantment enchantment = enchantmentRegistry.getOptional(enchantmentKey).orElse(null);
         if (enchantment == null) {
             return 0;
         }
 
-        return EnchantmentHelper.getLevel(enchantmentRegistry.getEntry(enchantment), stack);
+        return EnchantmentHelper.getItemEnchantmentLevel(enchantmentRegistry.wrapAsHolder(enchantment), stack);
     }
 
-    public static boolean hasWitherFuryExclusiveEnchantments(World world, ItemStack stack) {
+    public static boolean hasWitherFuryExclusiveEnchantments(Level world, ItemStack stack) {
         return getLevel(world, stack, FURIOUS) > 0 || getLevel(world, stack, VIOLENT) > 0;
     }
 
-    private static RegistryKey<Enchantment> keyOf(String name) {
-        return RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(BoundlessRealmsMod.MOD_ID, name));
+    private static ResourceKey<Enchantment> keyOf(String name) {
+        return ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, name));
     }
 }

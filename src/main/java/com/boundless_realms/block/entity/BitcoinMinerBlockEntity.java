@@ -5,40 +5,40 @@ import com.boundless_realms.item.GraphicsCardItem;
 import com.boundless_realms.item.ModItems;
 import com.boundless_realms.screen.BitcoinMinerScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
-public class BitcoinMinerBlockEntity extends LockableContainerBlockEntity implements ExtendedScreenHandlerFactory<BlockPos> {
+public class BitcoinMinerBlockEntity extends BaseContainerBlockEntity implements ExtendedScreenHandlerFactory<BlockPos> {
     public static final int INPUT_SLOT_COUNT = 10;
     public static final int OUTPUT_SLOT = 10;
     public static final int TOTAL_SLOTS = 11;
     public static final int TICKS_PER_BITCOIN = 200;
     public static final int HASHRATE_PER_BITCOIN = 10000;
 
-    private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(TOTAL_SLOTS, ItemStack.EMPTY);
+    private NonNullList<ItemStack> inventory = NonNullList.withSize(TOTAL_SLOTS, ItemStack.EMPTY);
     private int miningTicks;
 
     public BitcoinMinerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BITCOIN_MINER, pos, state);
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, BitcoinMinerBlockEntity blockEntity) {
+    public static void tick(Level world, BlockPos pos, BlockState state, BitcoinMinerBlockEntity blockEntity) {
         if (!blockEntity.hasRequiredHashrate()) {
             if (blockEntity.miningTicks != 0) {
                 blockEntity.miningTicks = 0;
-                markDirty(world, pos, state);
+                setChanged(world, pos, state);
             }
 
             return;
@@ -53,67 +53,67 @@ public class BitcoinMinerBlockEntity extends LockableContainerBlockEntity implem
         if (blockEntity.miningTicks >= TICKS_PER_BITCOIN) {
             blockEntity.miningTicks = 0;
             blockEntity.outputBitcoin();
-            markDirty(world, pos, state);
+            setChanged(world, pos, state);
         }
     }
 
     @Override
-    protected Text getContainerName() {
-        return Text.translatable("container.boundless_realms.bitcoin_miner");
+    protected Component getDefaultName() {
+        return Component.translatable("container.boundless_realms.bitcoin_miner");
     }
 
     @Override
-    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
+    protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
         return new BitcoinMinerScreenHandler(syncId, playerInventory, this);
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayerEntity player) {
-        return pos;
+    public BlockPos getScreenOpeningData(ServerPlayer player) {
+        return worldPosition;
     }
 
     @Override
-    public int size() {
+    public int getContainerSize() {
         return inventory.size();
     }
 
     @Override
-    public boolean isValid(int slot, ItemStack stack) {
+    public boolean canPlaceItem(int slot, ItemStack stack) {
         return slot < INPUT_SLOT_COUNT && stack.getItem() instanceof GraphicsCardItem;
     }
 
     @Override
-    protected DefaultedList<ItemStack> getHeldStacks() {
+    protected NonNullList<ItemStack> getItems() {
         return inventory;
     }
 
     @Override
-    protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+    protected void setItems(NonNullList<ItemStack> inventory) {
         this.inventory = inventory;
     }
 
     @Override
-    protected void readData(ReadView view) {
-        super.readData(view);
-        Inventories.readData(view, inventory);
-        miningTicks = view.getInt("mining_ticks", 0);
+    protected void loadAdditional(ValueInput view) {
+        super.loadAdditional(view);
+        ContainerHelper.loadAllItems(view, inventory);
+        miningTicks = view.getIntOr("mining_ticks", 0);
     }
 
     @Override
-    protected void writeData(WriteView view) {
-        super.writeData(view);
-        Inventories.writeData(view, inventory);
+    protected void saveAdditional(ValueOutput view) {
+        super.saveAdditional(view);
+        ContainerHelper.saveAllItems(view, inventory);
         view.putInt("mining_ticks", miningTicks);
     }
 
     @Override
-    public net.minecraft.nbt.NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
-        return createNbt(registries);
+    public net.minecraft.nbt.CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
     }
 
     @Override
-    public net.minecraft.network.packet.Packet<net.minecraft.network.listener.ClientPlayPacketListener> toUpdatePacket() {
-        return net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket.create(this);
+    public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
     }
 
     private boolean hasRequiredHashrate() {
@@ -138,7 +138,7 @@ public class BitcoinMinerBlockEntity extends LockableContainerBlockEntity implem
         ItemStack outputStack = inventory.get(OUTPUT_SLOT);
 
         return outputStack.isEmpty()
-                || (outputStack.isOf(ModItems.BITCOIN) && outputStack.getCount() < outputStack.getMaxCount());
+                || (outputStack.is(ModItems.BITCOIN) && outputStack.getCount() < outputStack.getMaxStackSize());
     }
 
     private void outputBitcoin() {
@@ -147,7 +147,7 @@ public class BitcoinMinerBlockEntity extends LockableContainerBlockEntity implem
         if (outputStack.isEmpty()) {
             inventory.set(OUTPUT_SLOT, new ItemStack(ModItems.BITCOIN));
         } else {
-            outputStack.increment(1);
+            outputStack.grow(1);
         }
     }
 }

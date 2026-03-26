@@ -2,35 +2,35 @@ package com.boundless_realms.entity;
 
 import com.boundless_realms.BoundlessRealmsMod;
 import com.boundless_realms.item.ModItems;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
-public class TicketInspectorEntity extends VillagerEntity {
+public class TicketInspectorEntity extends Villager {
 
-    private static final RegistryKey<DamageType> TOO_HONEST_DAMAGE_TYPE = RegistryKey.of(
-            RegistryKeys.DAMAGE_TYPE,
-            Identifier.of(BoundlessRealmsMod.MOD_ID, "too_honest")
+    private static final ResourceKey<DamageType> TOO_HONEST_DAMAGE_TYPE = ResourceKey.create(
+            Registries.DAMAGE_TYPE,
+            Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "too_honest")
     );
 
     private enum InspectorState {
@@ -42,47 +42,47 @@ public class TicketInspectorEntity extends VillagerEntity {
     }
 
     private InspectorState inspectorState = InspectorState.IDLE;
-    private PlayerEntity targetPlayer;
+    private Player targetPlayer;
     private ItemStack stolenTicket = ItemStack.EMPTY;
     private boolean stolenTicketIsFake = false;
     private boolean playerClaimedRealTicketWasFake = false;
     private boolean canTrigger = true;
     private int stateTimer = 0;
 
-    public TicketInspectorEntity(EntityType<? extends VillagerEntity> entityType, World world) {
+    public TicketInspectorEntity(EntityType<? extends Villager> entityType, Level world) {
         super(entityType, world);
     }
 
-    public static DefaultAttributeContainer.Builder createAttributes() {
-        return MobEntity.createMobAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 20.0)
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.35)
-                .add(EntityAttributes.FOLLOW_RANGE, 16.0);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
+                .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 
     @Override
-    protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new WanderAroundFarGoal(this, 0.8));
-        this.goalSelector.add(2, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.add(3, new LookAroundGoal(this));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        World world = this.getEntityWorld();
-        if (world.isClient()) {
+        Level world = this.level();
+        if (world.isClientSide()) {
             return;
         }
 
-        PlayerEntity nearbyPlayer = world.getClosestPlayer(this, 10.0);
+        Player nearbyPlayer = world.getNearestPlayer(this, 10.0);
 
         if (nearbyPlayer == null) {
             canTrigger = true;
 
-            if (inspectorState == InspectorState.LEAVING && this.getNavigation().isIdle()) {
+            if (inspectorState == InspectorState.LEAVING && this.getNavigation().isDone()) {
                 resetState();
             }
 
@@ -98,7 +98,7 @@ public class TicketInspectorEntity extends VillagerEntity {
         }
     }
 
-    private void tickIdle(PlayerEntity nearbyPlayer) {
+    private void tickIdle(Player nearbyPlayer) {
         if (!canTrigger) {
             return;
         }
@@ -110,7 +110,7 @@ public class TicketInspectorEntity extends VillagerEntity {
         targetPlayer = nearbyPlayer;
         canTrigger = false;
         inspectorState = InspectorState.APPROACHING;
-        this.getNavigation().startMovingTo(targetPlayer, 1.25);
+        this.getNavigation().moveTo(targetPlayer, 1.25);
     }
 
     private void tickApproaching() {
@@ -119,15 +119,15 @@ public class TicketInspectorEntity extends VillagerEntity {
             return;
         }
 
-        this.getLookControl().lookAt(targetPlayer, 30.0F, 30.0F);
-        this.getNavigation().startMovingTo(targetPlayer, 1.25);
+        this.getLookControl().setLookAt(targetPlayer, 30.0F, 30.0F);
+        this.getNavigation().moveTo(targetPlayer, 1.25);
 
         if (this.distanceTo(targetPlayer) <= 2.2F) {
             stolenTicket = stealLunchTicket(targetPlayer);
 
             if (stolenTicket.isEmpty()) {
-                targetPlayer.sendMessage(
-                        Text.translatable("dialogue.boundless_realms.inspector.no_ticket"),
+                targetPlayer.displayClientMessage(
+                        Component.translatable("dialogue.boundless_realms.inspector.no_ticket"),
                         false
                 );
                 beginLeaving();
@@ -145,7 +145,7 @@ public class TicketInspectorEntity extends VillagerEntity {
             return;
         }
 
-        this.getLookControl().lookAt(targetPlayer, 30.0F, 30.0F);
+        this.getLookControl().setLookAt(targetPlayer, 30.0F, 30.0F);
     }
 
     private void tickThinking() {
@@ -160,8 +160,8 @@ public class TicketInspectorEntity extends VillagerEntity {
     private void tickLeaving() {
         stateTimer--;
 
-        if (stateTimer <= 0 && this.getNavigation().isIdle()) {
-            if (this.getEntityWorld().getClosestPlayer(this, 10.0) == null) {
+        if (stateTimer <= 0 && this.getNavigation().isDone()) {
+            if (this.level().getNearestPlayer(this, 10.0) == null) {
                 resetState();
             }
         }
@@ -171,43 +171,43 @@ public class TicketInspectorEntity extends VillagerEntity {
         return targetPlayer != null && targetPlayer.isAlive();
     }
 
-    private void sendQuestion(PlayerEntity player) {
-        player.sendMessage(
-                Text.translatable("dialogue.boundless_realms.inspector.question"),
+    private void sendQuestion(Player player) {
+        player.displayClientMessage(
+                Component.translatable("dialogue.boundless_realms.inspector.question"),
                 false
         );
 
-        Text yesButton = Text.translatable("dialogue.boundless_realms.inspector.answer_yes")
-                .styled(style -> style.withClickEvent(
+        Component yesButton = Component.translatable("dialogue.boundless_realms.inspector.answer_yes")
+                .withStyle(style -> style.withClickEvent(
                         new ClickEvent.RunCommand("/inspector_answer yes")
                 ));
 
-        Text noButton1 = Text.translatable("dialogue.boundless_realms.inspector.answer_no")
-                .styled(style -> style.withClickEvent(
+        Component noButton1 = Component.translatable("dialogue.boundless_realms.inspector.answer_no")
+                .withStyle(style -> style.withClickEvent(
                         new ClickEvent.RunCommand("/inspector_answer no")
                 ));
 
-        player.sendMessage(
-                Text.empty().append(yesButton).append(Text.literal("  ")).append(noButton1),
+        player.displayClientMessage(
+                Component.empty().append(yesButton).append(Component.literal("  ")).append(noButton1),
                 false
         );
     }
 
-    public boolean isWaitingFor(PlayerEntity player) {
+    public boolean isWaitingFor(Player player) {
         return inspectorState == InspectorState.WAITING_FOR_ANSWER
                 && targetPlayer != null
-                && targetPlayer.getUuid().equals(player.getUuid());
+                && targetPlayer.getUUID().equals(player.getUUID());
     }
 
-    public void onPlayerAnsweredNo(PlayerEntity player) {
+    public void onPlayerAnsweredNo(Player player) {
         if (!isWaitingFor(player)) {
             return;
         }
 
         playerClaimedRealTicketWasFake = false;
 
-        player.sendMessage(
-                Text.translatable("dialogue.boundless_realms.inspector.thinking"),
+        player.displayClientMessage(
+                Component.translatable("dialogue.boundless_realms.inspector.thinking"),
                 false
         );
 
@@ -215,16 +215,16 @@ public class TicketInspectorEntity extends VillagerEntity {
         stateTimer = 40;
     }
 
-    public void onPlayerAnsweredYes(PlayerEntity player) {
+    public void onPlayerAnsweredYes(Player player) {
         if (!isWaitingFor(player)) {
             return;
         }
 
         if (stolenTicketIsFake) {
-            player.sendMessage(Text.translatable("dialogue.boundless_realms.inspector.honest"), false);
+            player.displayClientMessage(Component.translatable("dialogue.boundless_realms.inspector.honest"), false);
 
-            if (player.getEntityWorld() instanceof ServerWorld serverWorld) {
-                player.damage(serverWorld, createTooHonestDamageSource(serverWorld), Float.MAX_VALUE);
+            if (player.level() instanceof ServerLevel serverWorld) {
+                player.hurtServer(serverWorld, createTooHonestDamageSource(serverWorld), Float.MAX_VALUE);
             }
 
             stolenTicket = ItemStack.EMPTY;
@@ -235,17 +235,17 @@ public class TicketInspectorEntity extends VillagerEntity {
         }
 
         playerClaimedRealTicketWasFake = true;
-        player.sendMessage(
-                Text.translatable("dialogue.boundless_realms.inspector.self_doubt"),
+        player.displayClientMessage(
+                Component.translatable("dialogue.boundless_realms.inspector.self_doubt"),
                 false
         );
         inspectorState = InspectorState.THINKING;
         stateTimer = 40;
     }
 
-    private DamageSource createTooHonestDamageSource(ServerWorld world) {
+    private DamageSource createTooHonestDamageSource(ServerLevel world) {
         return new DamageSource(
-                world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getEntry(TOO_HONEST_DAMAGE_TYPE.getValue()).orElseThrow(),
+                world.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).get(TOO_HONEST_DAMAGE_TYPE.identifier()).orElseThrow(),
                 this
         );
     }
@@ -266,8 +266,8 @@ public class TicketInspectorEntity extends VillagerEntity {
 
         if (stolenTicketIsFake && this.getRandom().nextFloat() >= 0.2F) {
             targetPlayer.setHealth(1.0F);
-            targetPlayer.sendMessage(
-                    Text.translatable("dialogue.boundless_realms.inspector.fake"),
+            targetPlayer.displayClientMessage(
+                    Component.translatable("dialogue.boundless_realms.inspector.fake"),
                     false
             );
             stolenTicket = ItemStack.EMPTY;
@@ -281,8 +281,8 @@ public class TicketInspectorEntity extends VillagerEntity {
 
     private void confiscateTicketAndWarn() {
         if (targetPlayer != null) {
-            targetPlayer.sendMessage(
-                    Text.translatable("dialogue.boundless_realms.inspector.warning"),
+            targetPlayer.displayClientMessage(
+                    Component.translatable("dialogue.boundless_realms.inspector.warning"),
                     false
             );
         }
@@ -292,7 +292,7 @@ public class TicketInspectorEntity extends VillagerEntity {
     }
 
     private void returnTicket() {
-        World world = this.getEntityWorld();
+        Level world = this.level();
 
         if (stolenTicket.isEmpty()) {
             return;
@@ -307,19 +307,19 @@ public class TicketInspectorEntity extends VillagerEntity {
         );
 
         if (targetPlayer != null) {
-            Vec3d from = new Vec3d(this.getX(), this.getEyeY(), this.getZ());
-            Vec3d to = new Vec3d(targetPlayer.getX(), targetPlayer.getEyeY(), targetPlayer.getZ());
-            Vec3d direction = to.subtract(from).normalize().multiply(0.35);
+            Vec3 from = new Vec3(this.getX(), this.getEyeY(), this.getZ());
+            Vec3 to = new Vec3(targetPlayer.getX(), targetPlayer.getEyeY(), targetPlayer.getZ());
+            Vec3 direction = to.subtract(from).normalize().scale(0.35);
 
-            itemEntity.setVelocity(direction.x, 0.25, direction.z);
+            itemEntity.setDeltaMovement(direction.x, 0.25, direction.z);
 
-            targetPlayer.sendMessage(
-                    Text.translatable("dialogue.boundless_realms.inspector.return"),
+            targetPlayer.displayClientMessage(
+                    Component.translatable("dialogue.boundless_realms.inspector.return"),
                     false
             );
         }
 
-        world.spawnEntity(itemEntity);
+        world.addFreshEntity(itemEntity);
         stolenTicket = ItemStack.EMPTY;
         stolenTicketIsFake = false;
     }
@@ -332,20 +332,20 @@ public class TicketInspectorEntity extends VillagerEntity {
         double awayZ = this.getZ() + 8.0;
 
         if (targetPlayer != null) {
-            Vec3d fromPlayerToInspector = new Vec3d(
+            Vec3 fromPlayerToInspector = new Vec3(
                     this.getX() - targetPlayer.getX(),
                     0.0,
                     this.getZ() - targetPlayer.getZ()
             );
 
-            if (fromPlayerToInspector.lengthSquared() > 0.0001) {
-                Vec3d direction = fromPlayerToInspector.normalize().multiply(10.0);
+            if (fromPlayerToInspector.lengthSqr() > 0.0001) {
+                Vec3 direction = fromPlayerToInspector.normalize().scale(10.0);
                 awayX = this.getX() + direction.x;
                 awayZ = this.getZ() + direction.z;
             }
         }
 
-        this.getNavigation().startMovingTo(awayX, this.getY(), awayZ, 1.35);
+        this.getNavigation().moveTo(awayX, this.getY(), awayZ, 1.35);
     }
 
     private void resetState() {
@@ -357,38 +357,38 @@ public class TicketInspectorEntity extends VillagerEntity {
         stateTimer = 0;
     }
 
-    private boolean hasLunchTicketInHand(PlayerEntity player) {
-        return player.getMainHandStack().isOf(ModItems.LUNCH_TICKET)
-                || player.getOffHandStack().isOf(ModItems.LUNCH_TICKET)
-                || player.getMainHandStack().isOf(ModItems.FAKE_LUNCH_TICKET)
-                || player.getOffHandStack().isOf(ModItems.FAKE_LUNCH_TICKET);
+    private boolean hasLunchTicketInHand(Player player) {
+        return player.getMainHandItem().is(ModItems.LUNCH_TICKET)
+                || player.getOffhandItem().is(ModItems.LUNCH_TICKET)
+                || player.getMainHandItem().is(ModItems.FAKE_LUNCH_TICKET)
+                || player.getOffhandItem().is(ModItems.FAKE_LUNCH_TICKET);
     }
 
-    private ItemStack stealLunchTicket(PlayerEntity player) {
-        if (player.getMainHandStack().isOf(ModItems.LUNCH_TICKET)) {
-            ItemStack stack = player.getMainHandStack().copy();
-            player.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+    private ItemStack stealLunchTicket(Player player) {
+        if (player.getMainHandItem().is(ModItems.LUNCH_TICKET)) {
+            ItemStack stack = player.getMainHandItem().copy();
+            player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             stolenTicketIsFake = false;
             return stack;
         }
 
-        if (player.getOffHandStack().isOf(ModItems.LUNCH_TICKET)) {
-            ItemStack stack = player.getOffHandStack().copy();
-            player.setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY);
+        if (player.getOffhandItem().is(ModItems.LUNCH_TICKET)) {
+            ItemStack stack = player.getOffhandItem().copy();
+            player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             stolenTicketIsFake = false;
             return stack;
         }
 
-        if (player.getMainHandStack().isOf(ModItems.FAKE_LUNCH_TICKET)) {
-            ItemStack stack = player.getMainHandStack().copy();
-            player.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+        if (player.getMainHandItem().is(ModItems.FAKE_LUNCH_TICKET)) {
+            ItemStack stack = player.getMainHandItem().copy();
+            player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             stolenTicketIsFake = true;
             return stack;
         }
 
-        if (player.getOffHandStack().isOf(ModItems.FAKE_LUNCH_TICKET)) {
-            ItemStack stack = player.getOffHandStack().copy();
-            player.setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY);
+        if (player.getOffhandItem().is(ModItems.FAKE_LUNCH_TICKET)) {
+            ItemStack stack = player.getOffhandItem().copy();
+            player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             stolenTicketIsFake = true;
             return stack;
         }

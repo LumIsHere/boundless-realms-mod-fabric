@@ -1,18 +1,18 @@
 package com.boundless_realms.recipe;
 
 import com.boundless_realms.block.ModBlocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.AbstractCookingRecipe;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.book.CookingRecipeCategory;
-import net.minecraft.recipe.book.RecipeBookCategory;
-import net.minecraft.recipe.book.RecipeBookCategories;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class NetherSmeltingRecipe extends AbstractCookingRecipe {
-    public NetherSmeltingRecipe(String group, CookingRecipeCategory category, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
+    public NetherSmeltingRecipe(String group, CookingBookCategory category, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
         super(group, category, ingredient, result, experience, cookingTime);
     }
 
@@ -27,12 +27,12 @@ public class NetherSmeltingRecipe extends AbstractCookingRecipe {
     }
 
     @Override
-    public RecipeBookCategory getRecipeBookCategory() {
+    public RecipeBookCategory recipeBookCategory() {
         return RecipeBookCategories.FURNACE_MISC;
     }
 
     @Override
-    public Item getCookerItem() {
+    public Item furnaceIcon() {
         return null;
     }
 }

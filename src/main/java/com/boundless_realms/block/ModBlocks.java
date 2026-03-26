@@ -1,47 +1,47 @@
 package com.boundless_realms.block;
 
 import com.boundless_realms.BoundlessRealmsMod;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
 import java.util.function.Function;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 
 public class ModBlocks {
 
     public static final Block A_BLOCK = register(
             "a_block",
             Block::new,
-            AbstractBlock.Settings.create(),
+            BlockBehaviour.Properties.of(),
             true
     );
     public static final Block BITCOIN_MINER = register(
             "bitcoin_miner",
             BitcoinMinerBlock::new,
-            AbstractBlock.Settings.create().strength(4.0f).mapColor(MapColor.IRON_GRAY).requiresTool(),
+            BlockBehaviour.Properties.of().strength(4.0f).mapColor(MapColor.METAL).requiresCorrectToolForDrops(),
             true
     );
 
-    private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
-        Identifier id = Identifier.of(BoundlessRealmsMod.MOD_ID, name);
+    private static Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties settings, boolean shouldRegisterItem) {
+        Identifier id = Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, name);
 
-        RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, id);
-        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
+        ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
+        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
 
-        Block block = blockFactory.apply(settings.registryKey(blockKey));
+        Block block = blockFactory.apply(settings.setId(blockKey));
 
         if (shouldRegisterItem) {
-            BlockItem blockItem = new BlockItem(block, new Item.Settings().registryKey(itemKey));
-            Registry.register(Registries.ITEM, itemKey, blockItem);
+            BlockItem blockItem = new BlockItem(block, new Item.Properties().setId(itemKey));
+            Registry.register(BuiltInRegistries.ITEM, itemKey, blockItem);
         }
 
-        return Registry.register(Registries.BLOCK, blockKey, block);
+        return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
     }
 
     public static void registerModBlocks() {

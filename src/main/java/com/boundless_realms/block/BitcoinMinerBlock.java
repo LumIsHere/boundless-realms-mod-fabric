@@ -2,74 +2,74 @@ package com.boundless_realms.block;
 
 import com.boundless_realms.block.entity.BitcoinMinerBlockEntity;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public class BitcoinMinerBlock extends BlockWithEntity implements BlockEntityProvider {
-    public static final MapCodec<BitcoinMinerBlock> CODEC = createCodec(BitcoinMinerBlock::new);
+public class BitcoinMinerBlock extends BaseEntityBlock implements EntityBlock {
+    public static final MapCodec<BitcoinMinerBlock> CODEC = simpleCodec(BitcoinMinerBlock::new);
 
-    public BitcoinMinerBlock(Settings settings) {
+    public BitcoinMinerBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BitcoinMinerBlockEntity(pos, state);
     }
 
     @Override
-    protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (!world.isClient()) {
-            player.openHandledScreen(createScreenHandlerFactory(state, world, pos));
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if (!world.isClientSide()) {
+            player.openMenu(getMenuProvider(state, world, pos));
         }
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    protected void onStateReplaced(BlockState state, ServerWorld world, BlockPos pos, boolean moved) {
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
         if (!moved) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
 
             if (blockEntity instanceof BitcoinMinerBlockEntity minerBlockEntity) {
-                ItemScatterer.spawn(world, pos, minerBlockEntity);
+                Containers.dropContents(world, pos, minerBlockEntity);
             }
         }
 
-        super.onStateReplaced(state, world, pos, moved);
+        super.affectNeighborsAfterRemoval(state, world, pos, moved);
     }
 
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(
-            World world,
+            Level world,
             BlockState state,
             BlockEntityType<T> type
     ) {
-        return world.isClient()
+        return world.isClientSide()
                 ? null
-                : validateTicker(type, ModBlockEntities.BITCOIN_MINER, BitcoinMinerBlockEntity::tick);
+                : createTickerHelper(type, ModBlockEntities.BITCOIN_MINER, BitcoinMinerBlockEntity::tick);
     }
 }

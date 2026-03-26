@@ -1,11 +1,11 @@
 package com.boundless_realms.item;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LazyEntityReference;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.player.Player;
 
 public final class EmeraldGearEffects {
     private static final double GOLEM_CALM_RADIUS = 64.0D;
@@ -17,15 +17,15 @@ public final class EmeraldGearEffects {
         ServerTickEvents.END_WORLD_TICK.register(EmeraldGearEffects::onEndWorldTick);
     }
 
-    public static boolean hasFullEmeraldSet(PlayerEntity player) {
-        return player.getEquippedStack(EquipmentSlot.HEAD).isOf(ModItems.EMERALD_HELMET)
-                && player.getEquippedStack(EquipmentSlot.CHEST).isOf(ModItems.EMERALD_CHESTPLATE)
-                && player.getEquippedStack(EquipmentSlot.LEGS).isOf(ModItems.EMERALD_LEGGINGS)
-                && player.getEquippedStack(EquipmentSlot.FEET).isOf(ModItems.EMERALD_BOOTS);
+    public static boolean hasFullEmeraldSet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.EMERALD_HELMET)
+                && player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.EMERALD_CHESTPLATE)
+                && player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.EMERALD_LEGGINGS)
+                && player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.EMERALD_BOOTS);
     }
 
-    private static void onEndWorldTick(ServerWorld world) {
-        for (var player : world.getPlayers()) {
+    private static void onEndWorldTick(ServerLevel world) {
+        for (var player : world.players()) {
             if (!hasFullEmeraldSet(player)) {
                 continue;
             }
@@ -34,19 +34,19 @@ public final class EmeraldGearEffects {
         }
     }
 
-    private static void calmNearbyGolems(ServerWorld world, PlayerEntity player) {
-        for (IronGolemEntity golem : world.getEntitiesByClass(
-                IronGolemEntity.class,
-                player.getBoundingBox().expand(GOLEM_CALM_RADIUS),
+    private static void calmNearbyGolems(ServerLevel world, Player player) {
+        for (IronGolem golem : world.getEntitiesOfClass(
+                IronGolem.class,
+                player.getBoundingBox().inflate(GOLEM_CALM_RADIUS),
                 ironGolem -> isAngryAtPlayer(world, ironGolem, player) || ironGolem.getTarget() == player
         )) {
-            golem.stopAnger();
+            golem.stopBeingAngry();
             golem.setTarget(null);
-            golem.setAttacker(null);
+            golem.setLastHurtByMob(null);
         }
     }
 
-    private static boolean isAngryAtPlayer(ServerWorld world, IronGolemEntity golem, PlayerEntity player) {
-        return LazyEntityReference.getLivingEntity(golem.getAngryAt(), world) == player;
+    private static boolean isAngryAtPlayer(ServerLevel world, IronGolem golem, Player player) {
+        return EntityReference.getLivingEntity(golem.getPersistentAngerTarget(), world) == player;
     }
 }

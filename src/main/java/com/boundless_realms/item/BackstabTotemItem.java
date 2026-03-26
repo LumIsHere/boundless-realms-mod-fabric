@@ -1,27 +1,27 @@
 package com.boundless_realms.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-import net.minecraft.command.argument.EntityAnchorArgumentType;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class BackstabTotemItem extends Item {
 
-    public BackstabTotemItem(Settings settings) {
+    public BackstabTotemItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        ItemStack stack = user.getItemInHand(hand);
 
-        if (!world.isClient()) {
+        if (!world.isClientSide()) {
 
             // Find nearest player (excluding self)
-            PlayerEntity target = world.getClosestPlayer(
+            Player target = world.getNearestPlayer(
                     user.getX(),
                     user.getY(),
                     user.getZ(),
@@ -31,7 +31,7 @@ public class BackstabTotemItem extends Item {
 
             if (target != null) {
 
-                float yaw = target.getYaw();
+                float yaw = target.getYRot();
 
                 double radians = Math.toRadians(yaw);
 
@@ -43,33 +43,33 @@ public class BackstabTotemItem extends Item {
                 double newY = target.getY();
                 double newZ = target.getZ() + offsetZ;
 
-                user.requestTeleport(newX, newY, newZ);
+                user.teleportTo(newX, newY, newZ);
                 user.lookAt(
-                        EntityAnchorArgumentType.EntityAnchor.EYES,
-                        target.getEyePos()
+                        EntityAnchorArgument.Anchor.EYES,
+                        target.getEyePosition()
                 );
 
-                user.sendMessage(
-                        net.minecraft.text.Text.translatable(
+                user.displayClientMessage(
+                        net.minecraft.network.chat.Component.translatable(
                                 "teleported_to_target_backstab_totem",
                                 target.getDisplayName()
                         ),
                         true
                 );
 
-                user.getItemCooldownManager().set(stack, 100);
+                user.getCooldowns().addCooldown(stack, 100);
 
             }
 
             if (target == null) {
-                user.sendMessage(
-                        net.minecraft.text.Text.translatable("notification_no_target_backstab_totem"),
+                user.displayClientMessage(
+                        net.minecraft.network.chat.Component.translatable("notification_no_target_backstab_totem"),
                         true
                 );
             }
             // Cooldown
         }
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 }

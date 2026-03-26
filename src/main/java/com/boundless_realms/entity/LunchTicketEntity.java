@@ -1,19 +1,19 @@
 package com.boundless_realms.entity;
 
 import com.boundless_realms.item.ModItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 
-public class LunchTicketEntity extends ThrownItemEntity {
+public class LunchTicketEntity extends ThrowableItemProjectile {
 
-    public LunchTicketEntity(EntityType<? extends LunchTicketEntity> entityType, World world) {
+    public LunchTicketEntity(EntityType<? extends LunchTicketEntity> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -23,27 +23,27 @@ public class LunchTicketEntity extends ThrownItemEntity {
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult hitResult) {
-        super.onEntityHit(hitResult);
+    protected void onHitEntity(EntityHitResult hitResult) {
+        super.onHitEntity(hitResult);
 
-        World world = this.getEntityWorld();
-        if (!(world instanceof ServerWorld serverWorld)) {
+        Level world = this.level();
+        if (!(world instanceof ServerLevel serverWorld)) {
             return;
         }
 
         Entity target = hitResult.getEntity();
 
         if (target instanceof LivingEntity living) {
-            living.damage(serverWorld, this.getDamageSources().thrown(this, this.getOwner()), 88.0F);
+            living.hurtServer(serverWorld, this.damageSources().thrown(this, this.getOwner()), 88.0F);
         }
 
         this.discard();
     }
     @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        super.onBlockHit(blockHitResult);
+    protected void onHitBlock(BlockHitResult blockHitResult) {
+        super.onHitBlock(blockHitResult);
 
-        if (!this.getEntityWorld().isClient()) {
+        if (!this.level().isClientSide()) {
             this.discard();
         }
     }

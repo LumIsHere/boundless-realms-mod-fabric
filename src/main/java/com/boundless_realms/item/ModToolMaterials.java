@@ -1,16 +1,16 @@
 package com.boundless_realms.item;
 
 import com.boundless_realms.BoundlessRealmsMod;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ToolMaterial;
 
 public final class ModToolMaterials {
-    public static final TagKey<net.minecraft.item.Item> VOIDSTEEL_REPAIR_MATERIALS = TagKey.of(
-            RegistryKeys.ITEM,
-            Identifier.of(BoundlessRealmsMod.MOD_ID, "voidsteel_repair_materials")
+    public static final TagKey<net.minecraft.world.item.Item> VOIDSTEEL_REPAIR_MATERIALS = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, "voidsteel_repair_materials")
     );
 
     public static final ToolMaterial VOIDSTEEL = new ToolMaterial(

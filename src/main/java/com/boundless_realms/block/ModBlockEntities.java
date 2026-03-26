@@ -3,14 +3,14 @@ package com.boundless_realms.block;
 import com.boundless_realms.BoundlessRealmsMod;
 import com.boundless_realms.block.entity.BitcoinMinerBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class ModBlockEntities {
     public static final BlockEntityType<BitcoinMinerBlockEntity> BITCOIN_MINER = register(
@@ -28,11 +28,11 @@ public class ModBlockEntities {
             FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory,
             Block... blocks) {
 
-        Identifier id = Identifier.of(BoundlessRealmsMod.MOD_ID, name);
-        RegistryKey<BlockEntityType<?>> key = RegistryKey.of(RegistryKeys.BLOCK_ENTITY_TYPE, id);
+        Identifier id = Identifier.fromNamespaceAndPath(BoundlessRealmsMod.MOD_ID, name);
+        ResourceKey<BlockEntityType<?>> key = ResourceKey.create(Registries.BLOCK_ENTITY_TYPE, id);
 
         return Registry.register(
-                Registries.BLOCK_ENTITY_TYPE,
+                BuiltInRegistries.BLOCK_ENTITY_TYPE,
                 id,
                 FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build()
         );
