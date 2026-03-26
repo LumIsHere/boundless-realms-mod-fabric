@@ -13,10 +13,10 @@
     "base": 10,
     "per_level_above_first": 8
   },
-  "primary_items": "#boundless_realms:enchantable/wither_furry",
+  "primary_items": "#boundless_realms:enchantable/wither_fury",
   "slots": [
     "mainhand"
   ],
-  "supported_items": "#boundless_realms:enchantable/wither_furry",
+  "supported_items": "#boundless_realms:enchantable/wither_fury",
   "weight": 5
 }
