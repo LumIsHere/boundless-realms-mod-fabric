@@ -8,6 +8,7 @@ import com.boundless_realms.item.EmeraldGearEffects;
 import com.boundless_realms.item.ModItemGroups;
 import com.boundless_realms.item.ModItems;
 import com.boundless_realms.item.VoidsteelGearEffects;
+import com.boundless_realms.money.BlockMoneyDrops;
 import com.boundless_realms.recipe.ModRecipeTypes;
 import com.boundless_realms.screen.ModScreenHandlers;
 import net.fabricmc.api.ModInitializer;
@@ -23,6 +24,7 @@ public class BoundlessRealmsMod implements ModInitializer {
 	public void onInitialize() {
 		ModEntities.registerModEntities();
 		ModItems.registerModItems();
+		BlockMoneyDrops.register();
 		ModItemGroups.registerItemGroups();
         ModBlocks.registerModBlocks();
         ModBlockEntities.registerBlockEntities();
